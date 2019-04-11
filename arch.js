@@ -38,7 +38,7 @@ fix = function() {
   e.value || set(parseArch(e.data.textContent))
 },
 fixAsIs = function() {
-  set(e.value ? e.value.exp() : parseArch(e.data.textContent + 'X'))
+  set(e.value ? e.value.exp : parseArch(e.data.textContent + 'X'))
 },
 moveFocus = function() {
   e.classList.remove('focus')
