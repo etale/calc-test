@@ -226,6 +226,16 @@ function parseArch(a) {
 }
 Arch.precision = 8
 
+const c = 299792458     .log
+const G = 6.67408e-11   .log
+const h = 6.62607015e-34.log
+const k = 1.380649e-23  .log
+
+const kg = new Arch((-  c + G - h + 2 .log) / 2 + PI2.log    , 0.25)
+const m  = new Arch(( 3*c - G - h - 2 .log) / 2              , 0.25)
+const s  = new Arch(( 5*c - G - h - 2 .log) / 2              , 0.25)
+const K  = new Arch((-5*c + G - h + 2 .log) / 2 + PI2.log + k, 0.25)
+
 class Adele extends Algebraic {
   constructor(r = 0n, s = 1n, n = 0n) {
     (([u, s]) => {
