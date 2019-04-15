@@ -177,12 +177,15 @@ class Arch extends Algebraic {
     arg %= 1; arg < 0 && (arg += 1)
     this.ord = ord; this.arg = arg
   }
-  get amp() { return (
-    (({ arg }) => {
-      arg < 0.5 || (arg -= 1)
-      return arg * PI2
-    })(this)
-  ) }
+  get _arg() {
+    return (
+      (({ arg }) => {
+        arg < 0.5 || (arg -= 1)
+        return arg
+      })(this)
+    )
+  }
+  get amp() { return this._arg * PI2 }
   eql(a) { return a !== 0 && this.ord === a.ord && this.arg === a.arg }
   get unit() { return new Arch(0, this.arg) }
   get body() { return new Arch(this.ord, 0) }
@@ -224,10 +227,7 @@ class Arch extends Algebraic {
   }
   pow(a) {
     return (
-      (({ ord, arg }) => {
-        arg < 0.5 || (arg -= 1)
-        return new Arch(ord * a, arg * a)
-      })(this)
+      new Arch(this.ord * a, this._arg * a)
     )
   }
   get sqrt() { return this.pow(0.5) }
@@ -262,12 +262,15 @@ const c  = 299792458     .log
 const G  = 6.67408e-11   .log
 const h  = 6.62607015e-34.log
 const k  = 1.380649e-23  .log
-const μ0 = (2 * PI2 * 1e-7).log
+const b  = 2 .log
+const pi2 = PI2.log
+const μ0 = b + pi2 - 7 * 10 .log
 
-const kg = new Arch((-  c + G - h + 2 .log) / 2 + PI2.log    , 0.25)
-const m  = new Arch(( 3*c - G - h - 2 .log) / 2              , 0.25)
-const s  = new Arch(( 5*c - G - h - 2 .log) / 2              , 0.25)
-const K  = new Arch((-5*c + G - h + 2 .log) / 2 + PI2.log + k, 0.25)
+const kg = new Arch((-  c + G - h + b) / 2 + pi2    , 0.25)
+const m  = new Arch(( 3*c - G - h - b) / 2          , 0.25)
+const s  = new Arch(( 5*c - G - h - b) / 2          , 0.25)
+const K  = new Arch((-5*c + G - h + b) / 2 + pi2 + k, 0.25)
+const B  = new Arch((             3*b + b.log))
 
 class Adele extends Algebraic {
   constructor(r = 0n, s = 1n, n = 0n) {
