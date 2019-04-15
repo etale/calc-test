@@ -190,26 +190,58 @@ class Arch extends Algebraic {
   get succ() { return this.exp.shift.log }
   get conj() { return new Arch(this.ord, -this.arg) }
   get inv() { return new Arch(-this.ord, -this.arg) }
-  mul(a) { return a === 0 ? 0 : new Arch(this.ord + a.ord, this.arg + a.arg) }
+  mul(a) {
+    return (
+      a === 0 ? 0 :
+      new Arch(this.ord + a.ord, this.arg + a.arg)
+    )
+  }
   get neg() { return new Arch(this.ord, this.arg + 0.5) }
-  add(a) { return a === 0 ? this : this.neg.eql(a) ? 0 : this.ord < a.ord ? a.add(this) : this.mul(this.inv.mul(a).succ) }
-  get log() { return (({ isUnity, ord, amp }) => (
-    isUnity ? 0 :
-    new Arch((ord ** 2 + amp ** 2).log * 0.5, amp.atan2(ord) / PI2)
-  ))(this)}
-  get exp() { return (({ ord, amp }) => (
-    (({ exp }, { cos, sin }) => (
-      new Arch(exp * cos, exp * sin / PI2)
-    ))(ord, amp)
-  ))(this)}
-  pow(a) { return new Arch(this.ord * a, this.arg * a)}
-  toString() { return (({ ord, arg }) => {
-    ord = ord.toFixed(Arch.precision).split('.')
-    arg = arg.toFixed(Arch.precision).split('.')
-    ord[1] || (ord[1] = '0')
-    arg[1] || (arg[1] = '0')
-    return ord[0] + '.' + ord[1] + '.' + arg[1] + 'X'
-  })(this) }
+  add(a) {
+    return (
+      a === 0 ? this :
+      this.neg.eql(a) ? 0 :
+      this.ord < a.ord ? a.add(this) :
+      this.mul(this.inv.mul(a).succ)
+    )
+  }
+  get log() {
+    return (
+      (({ isUnity, ord, amp }) => (
+        isUnity ? 0 :
+        new Arch((ord ** 2 + amp ** 2).log * 0.5, amp.atan2(ord) / PI2)
+      ))(this)
+    )
+  }
+  get exp() {
+    return (
+      (({ ord, amp }) => (
+        (({ exp }, { cos, sin }) => (
+          new Arch(exp * cos, exp * sin / PI2)
+        ))(ord, amp)
+      ))(this)
+    )
+  }
+  pow(a) {
+    return (
+      (({ ord, arg }) => {
+        arg < 0.5 || (arg -= 1)
+        return new Arch(ord * a, arg * a)
+      })(this)
+    )
+  }
+  get sqrt() { return this.pow(0.5) }
+  toString() {
+    return (
+      (({ ord, arg }) => {
+        ord = ord.toFixed(Arch.precision).split('.')
+        arg = arg.toFixed(Arch.precision).split('.')
+        ord[1] || (ord[1] = '0')
+        arg[1] || (arg[1] = '0')
+        return ord[0] + '.' + ord[1] + '.' + arg[1] + 'X'
+      })(this)
+    )
+  }
 }
 Reflect.defineProperty(Arch.prototype, 'unity', { value: new Arch })
 
@@ -226,10 +258,11 @@ function parseArch(a) {
 }
 Arch.precision = 8
 
-const c = 299792458     .log
-const G = 6.67408e-11   .log
-const h = 6.62607015e-34.log
-const k = 1.380649e-23  .log
+const c  = 299792458     .log
+const G  = 6.67408e-11   .log
+const h  = 6.62607015e-34.log
+const k  = 1.380649e-23  .log
+const μ0 = (2 * PI2 * 1e-7).log
 
 const kg = new Arch((-  c + G - h + 2 .log) / 2 + PI2.log    , 0.25)
 const m  = new Arch(( 3*c - G - h - 2 .log) / 2              , 0.25)
