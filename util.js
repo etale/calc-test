@@ -34,7 +34,7 @@ const unit = {
   Ω: kg.mul(m.pow(2)).mul(s.pow(-1)).mul(C.pow(-2)),
   Pa: kg.mul(m.pow(-1)).mul(s.pow(-2))
 }
-unit.eV  = _(nu_e).mul(unit.V)
+unit.eV  = e.mul(unit.V)
 
 //unit.F  = unit.C.mul(unit.V.inv)
 //unit.S  = unit.A.mul(unit.V.inv)
@@ -75,7 +75,7 @@ _vals = {
   e: _(nu_e).mul(C),
   'mass electron': _(9.10938356e-31).mul(kg),
   'mass proton': _(1.672621898e-27).mul(kg),
-  'mass u': _(2.3e6).mul(eV),
+  'mass u': _(2.3e6).mul(unit.eV),
 
 
 }

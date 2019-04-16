@@ -275,6 +275,7 @@ const K  = new Arch((-5*c + G - h + b) / 2 + pi2 + k, 0.125)
 const B  = new Arch((             3*b + b.log))
 const C  = new Arch((   c     - h + b - 7 * 10 .log
                                      ) / 2 + pi2    , 0.125)
+const e = new Arch(nu_e).mul(C)
 
 class Adele extends Algebraic {
   constructor(r = 0n, s = 1n, n = 0n) {
