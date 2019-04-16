@@ -2,6 +2,7 @@ class Algebraic {
   eql(a) { return this.valueOf() === a }
   get zero() { return 0 }
   get unity() { return 1 }
+  get neg() { return this.isZero ? this : -this }
   get unit() { return this < 0 ? -this.unity : this.unity }
   get body() { return this < 0 ? -this : this.valueOf() }
   get isZero() { return this.eql(this.zero) }
