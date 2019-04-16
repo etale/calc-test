@@ -50,18 +50,18 @@ var delta
    http://physics.nist.gov/constants
  */
 , prefix = {}, unit = {}
-, tau = _(2 * Math.PI, 0.25)
+, tau = _(PI2, 0.25)
 , one = _(1)
 , two = _(2)
 , half = two.inv
 , Ki = _(1024)
-, Mi = Ki.mul(Ki)
-, Gi = Mi.mul(Ki)
-, Ti = Gi.mul(Ki)
-, Pi = Ti.mul(Ki)
-, Ei = Pi.mul(Ki)
-, Zi = Ei.mul(Ki)
-, Yi = Zi.mul(Ki)
+, Mi = Ki.pow(2)
+, Gi = Mi.pow(3)
+, Ti = Gi.pow(4)
+, Pi = Ti.pow(5)
+, Ei = Pi.pow(6)
+, Zi = Ei.pow(7)
+, Yi = Zi.pow(8)
 //, b = two.log
 //, B = _(8).mul(b)
 , KiB = Ki.mul(B)
@@ -91,21 +91,22 @@ prefix.p = prefix.n.mul(prefix.m)
 //prefix.z = prefix.a.mul(prefix.m)
 //prefix.y = prefix.z.mul(prefix.m)
 //var kg = c_                .mul(_G).mul(h_).mul(tau).log.mul(half).exp
-unit.m = _c.mul(_c).mul(_c).mul(G_).mul(h_).mul(tau).log.mul(half).exp
-unit.s = unit.m.mul(_c)
-kg.arg = unit.m.arg = unit.s.arg = 0.125
+unit.m = m
+unit.s = s
+//kg.arg = unit.m.arg = unit.s.arg = 0.125
 unit.g = prefix.m.mul(kg)
-unit.Hz = unit.s.inv
-unit.N  = kg.mul(unit.m).mul(unit.Hz).mul(unit.Hz)
-unit.J  = unit.N.mul(unit.m)
-unit.A  = _mu0.mul(unit.N).log.mul(half).exp
-unit.A.arg = 0
-unit.K  = _Boltzmann.mul(unit.J)
-unit.C  = unit.A.mul(unit.s)
+unit.Hz = s.inv
+unit.N  = kg.mul(m).mul(s.pow(-2))
+unit.J  = unit.N.mul(m)
+unit.A  = _mu0.mul(unit.N).sqrt
+//unit.A.arg = 0
+unit.K  = K
+unit.C  = unit.A.mul(s)
 unit.W  = unit.J.mul(unit.Hz)
 unit.V  = unit.W.mul(unit.A.inv)
 unit.Ω  = unit.V.mul(unit.A.inv)
-unit.Pa  = unit.N.mul(unit.m.mul(unit.m).inv)
+//unit.Pa  = unit.N.mul(unit.m.mul(unit.m).inv)
+unit.Pa = unit.N.mul(m.pow(-2))
 // unit.F  = unit.C.mul(unit.V.inv)
 // unit.S  = unit.A.mul(unit.V.inv)
 // unit.Wb = unit.V.mul(unit.s)
