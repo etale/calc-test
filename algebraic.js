@@ -263,7 +263,7 @@ const c  = 299792458       .log
 const G  = 6.67408e-11     .log
 const h  = 6.62607015e-34  .log
 const k  = 1.380649e-23    .log
-//const e  = 1.602176634e-19 .log
+const nu_e  = 1.602176634e-19 .log
 const b  = 2               .log
 const pi2 = PI2            .log
 const μ0 = b + pi2 - 7 * 10 .log
@@ -273,6 +273,8 @@ const m  = new Arch(( 3*c - G - h - b) / 2          , 0.125)
 const s  = new Arch(( 5*c - G - h - b) / 2          , 0.125)
 const K  = new Arch((-5*c + G - h + b) / 2 + pi2 + k, 0.125)
 const B  = new Arch((             3*b + b.log))
+const C  = new Arch((   c     - h + b - 7 * 10 .log
+                                     ) / 2 + pi2    , 0.125)
 
 class Adele extends Algebraic {
   constructor(r = 0n, s = 1n, n = 0n) {

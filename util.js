@@ -1,3 +1,4 @@
+const _ = (a, b = 0) => new Arch(a.log, b)
 const kilo = new Arch(1000 .log)
 const prefix = {
  '': kilo.pow(0),
@@ -20,24 +21,26 @@ const prefix = {
 }
 const unit = {
   g: prefix.m.mul(kg),
-  m: m,
-  s: s,
-  K: K,
+  m,
+  s,
+  K,
+  C,
   Hz: s.inv,
-  N: kg.mul(m).mul(s.inv).mul(s.inv),
-  J: kg.mul(m).mul(m).mul(s.inv).mul(s.inv),
-  A: kg.mul(m).mul(s.inv).mul(s.inv).mul(new Arch(μ0)).sqrt
+  N: kg.mul(m).mul(s.pow(-2)),
+  J: kg.mul(m.pow(2)).mul(s.pow(-2)),
+  A: C.mul(s.inv),
+  W: kg.mul(m.pow(2)).mul(s.pow(-3)),
+  V: kg.mul(m.pow(2)).mul(s.pow(-2)).mul(C.pow(-1)),
+  Ω: kg.mul(m.pow(2)).mul(s.pow(-1)).mul(C.pow(-2)),
+  Pa: kg.mul(m.pow(-1)).mul(s.pow(-2))
 }
-unit.C  = unit.A.mul(unit.s)
-unit.W  = unit.J.mul(unit.Hz)
-unit.V  = unit.W.mul(unit.A.inv)
-unit.Ω  = unit.V.mul(unit.A.inv)
-unit.Pa  = unit.N.mul(unit.m.mul(unit.m).inv)
-unit.F  = unit.C.mul(unit.V.inv)
-unit.S  = unit.A.mul(unit.V.inv)
-unit.Wb = unit.V.mul(unit.s)
-unit.T  = unit.Wb.mul(unit.m.mul(unit.m).inv)
-unit.H  = unit.Wb.mul(unit.A.inv)
+unit.eV  = _(nu_e).mul(unit.V)
+
+//unit.F  = unit.C.mul(unit.V.inv)
+//unit.S  = unit.A.mul(unit.V.inv)
+//unit.Wb = unit.V.mul(unit.s)
+//unit.T  = unit.Wb.mul(unit.m.mul(unit.m).inv)
+//unit.H  = unit.Wb.mul(unit.A.inv)
 const Ki = new Arch(1024 .log)
 const bprefix = {
   '': Ki.pow(0),
@@ -53,3 +56,80 @@ const bprefix = {
 const bunit = {
   B: B
 }
+let vals = {}
+Reflect.ownKeys(prefix).forEach((p) => {
+  Reflect.ownKeys(unit).forEach((u) => {
+    vals[p + u] = prefix[p].mul(unit[u])
+  })
+})
+
+_vals = {
+  atm: _(101325).mul(unit.Pa),
+  min: _(60).mul(s),
+  hour: _(60 * 60).mul(s),
+  day: _(60 * 60 * 24).mul(s),
+  week: _(60 * 60 * 24 * 7).mul(s),
+  year: _(60 * 60 * 24 * 7 * 365.25).mul(s),
+  '0 °C': _(273.15).mul(K),
+  '100 °C': _(373.15).mul(K),
+  e: _(nu_e).mul(C),
+  'mass electron': _(9.10938356e-31).mul(kg),
+  'mass proton': _(1.672621898e-27).mul(kg),
+  'mass u': _(2.3e6).mul(eV),
+
+
+}
+
+, [_(1.275e9).mul(eV), 'mass c']
+, [_(173.07e9).mul(eV), 'mass t']
+, [_(80.4e9).mul(eV), 'mass W']
+, [_(126e9).mul(eV), 'mass Higgs']
+, km = prefix.k.mul(unit.m)
+, .K)
+//, e = _(1.6021766208e-19).mul(unit.C)
+, C)
+, me =
+, mp =
+, vals = Object.keys(unit).reduce(function (prev, u) {
+  return prev.concat(Object.keys(prefix).map(function (p) {
+    return [prefix[p].mul(unit[u]), p + u]
+  }))
+}, []).concat([
+  [eV, 'eV'], [atm, 'atm']
+, [min, 'min'], [hour, 'hour'], [day, 'day'], [week, 'week'], [year, 'year']
+, [prefix.k.mul(year), 'Thousand years']
+, [prefix.M.mul(year), 'Million years']
+, [prefix.G.mul(year), 'Billion years']
+, [two.log, 'b' ], [B, 'B' ]
+, [KiB, 'KiB'], [MiB, 'MiB'], [GiB, 'GiB'], [TiB, 'TiB']
+, [PiB, 'PiB'], [EiB, 'EiB'], [ZiB, 'ZiB'], [YiB, 'YiB']
+, [_0dc, ], [_100dc, '100 °C']
+, [_(1.65).mul(eV), 'IR'], [_(3.26).mul(eV), 'UV']
+, [e, 'e']
+, [unit.m.mul(unit.Hz), 'm/s']
+, [prefix.k.mul(unit.m).mul(hour.inv), 'km/hour']
+, [_(7.347673e22).mul(kg), 'mass Moon']
+, [_(4*Math.PI * 4.9048695e12).mul(unit.m.pow(3)).mul(unit.s.pow(-2)), 'mass Moon']
+, [_(4*Math.PI * 3.986004418e14).mul(unit.m.pow(3)).mul(unit.s.pow(-2)), 'mass Earth']
+, [_(4*Math.PI * 3.7931187e16).mul(unit.m.pow(3)).mul(unit.s.pow(-2)), 'mass Saturn']
+, [_(4*Math.PI * 1.26686534e17).mul(unit.m.pow(3)).mul(unit.s.pow(-2)), 'mass Jupiter']
+, [_(4*Math.PI * 1.32712442099e20).mul(unit.m.pow(3)).mul(unit.s.pow(-2)), 'mass Sun']
+, [_(3474.3).mul(km), 'radius Moon']
+, [_(6378.137).mul(km), 'radius Earth']
+, [_(695800).mul(km), 'radius Sun' ]
+, [_(384400).mul(km), 'orbit Moon']
+, [_(149597870700).mul(unit.m), 'au']
+, [_(39.445 * 149600000).mul(km), 'orbit Plute']
+, [_(13.799e9).mul(year), 'age Universe']
+, [me, 'mass electron']
+, [mp, 'mass proton']
+, [_(12 * 1.660539040e-27).mul(kg), 'mass C12']
+, [_(4.39).mul(year), 'distance α Centauri']
+, [_(643).mul(year), 'distance Betelgeuse']
+, [_(162.98e3).mul(year), 'distance Large Magellanic']
+, [_(2.54e6).mul(year), 'distance Andromeda']
+, [_(0.52917721067e-10).mul(unit.m), 'Bohr radius']
+, [_(2.72548).mul(unit.K), 'CMB']
+, [_(6.022140857e23), 'Avogadro constant']
+, [new Arch, '4πG = c = ε₀ = μ₀ = k']
+, [tau, 'h']
