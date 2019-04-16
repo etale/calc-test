@@ -1,5 +1,6 @@
 const kilo = new Arch(1000 .log)
 const prefix = {
+ '': kilo.pow(0),
   k: kilo,
   M: kilo.pow(2),
   G: kilo.pow(3),
@@ -39,6 +40,7 @@ unit.T  = unit.Wb.mul(unit.m.mul(unit.m).inv)
 unit.H  = unit.Wb.mul(unit.A.inv)
 const Ki = new Arch(1024 .log)
 const bprefix = {
+  '': Ki.pow(0),
   Ki: Ki,
   Mi: Ki.pow(2),
   Gi: Ki.pow(3),
