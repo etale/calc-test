@@ -3,6 +3,12 @@ class Algebraic {
   get zero() { return 0 }
   get unity() { return 1 }
   get neg() { return this.isZero ? this : -this }
+  get inv() {
+    return (
+      this.isZero ? undefined :
+      1/this
+    )
+  }
   get unit() { return this < 0 ? -this.unity : this.unity }
   get body() { return this < 0 ? -this : this.valueOf() }
   get isZero() { return this.eql(this.zero) }
