@@ -192,8 +192,8 @@ class Arch extends Algebraic {
   get body() { return new Arch(this.ord, 0) }
   get shift() { return new Arch(this.ord + 1, this.arg) }
   get succ() { return this.exp.shift.log }
-  get conj() { return new Arch(this.ord, -this.arg) }
-  get inv() { return new Arch(-this.ord, -this.arg) }
+  get conj() { return new Arch(this.ord, this.arg.neg) }
+  get inv() { return new Arch(this.ord.neg, this.arg.neg) }
   mul(a) {
     return (
       a === 0 ? 0 :
