@@ -1,5 +1,5 @@
 const _ = (a, b = 0) => new Arch(a.log, b)
-const kilo = new Arch(1000 .log)
+const kilo = _(1000)
 const prefix = {
  '': kilo.pow(0),
   k: kilo,
@@ -62,6 +62,11 @@ Reflect.ownKeys(prefix).forEach((p) => {
     vals[p + u] = prefix[p].mul(unit[u])
   })
 })
+Reflect.ownKeys(bprefix).forEach((p) => {
+  Reflect.ownKeys(bunit).forEach((u) => {
+    vals[p + u] = bprefix[p].mul(bunit[u])
+  })
+})
 
 _vals = {
   atm: _(101325).mul(unit.Pa),
@@ -76,34 +81,28 @@ _vals = {
   'mass electron': _(9.10938356e-31).mul(kg),
   'mass proton': _(1.672621898e-27).mul(kg),
   'mass u': _(2.3e6).mul(unit.eV),
+  'mass c': _(1.275e9).mul(unit.eV),
+  'mass t': _(173.07e9).mul(unit.eV),
+  'mass W': _(80.4e9).mul(unit.eV),
+  'mass Higgs': _(126e9).mul(unit.eV),
+  'Thousand years':
 
 
 }
+_vals['Thousand years']= kilo.mul(_vals.year)
+_vals['Million years'] = prefix.M.mul(_vals.year)
+_vals['Billion years'] = prefix.G.mul(_vals.year)
 
-, [_(1.275e9).mul(eV), 'mass c']
-, [_(173.07e9).mul(eV), 'mass t']
-, [_(80.4e9).mul(eV), 'mass W']
-, [_(126e9).mul(eV), 'mass Higgs']
 , km = prefix.k.mul(unit.m)
-, .K)
 //, e = _(1.6021766208e-19).mul(unit.C)
-, C)
-, me =
-, mp =
 , vals = Object.keys(unit).reduce(function (prev, u) {
   return prev.concat(Object.keys(prefix).map(function (p) {
     return [prefix[p].mul(unit[u]), p + u]
   }))
 }, []).concat([
-  [eV, 'eV'], [atm, 'atm']
-, [min, 'min'], [hour, 'hour'], [day, 'day'], [week, 'week'], [year, 'year']
-, [prefix.k.mul(year), 'Thousand years']
-, [prefix.M.mul(year), 'Million years']
-, [prefix.G.mul(year), 'Billion years']
 , [two.log, 'b' ], [B, 'B' ]
 , [KiB, 'KiB'], [MiB, 'MiB'], [GiB, 'GiB'], [TiB, 'TiB']
 , [PiB, 'PiB'], [EiB, 'EiB'], [ZiB, 'ZiB'], [YiB, 'YiB']
-, [_0dc, ], [_100dc, '100 °C']
 , [_(1.65).mul(eV), 'IR'], [_(3.26).mul(eV), 'UV']
 , [e, 'e']
 , [unit.m.mul(unit.Hz), 'm/s']
