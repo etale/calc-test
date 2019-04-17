@@ -14,22 +14,6 @@ var html = {};
 Arch.precision = 6
 
 var
-//c = new Arch(Math.log(299792458)),      //         m   s^{-1}
-//G = new Arch(Math.log(4 * Math.PI * 6.67408e-11)),    // kg^{-1} m^3 s^{-2}
-//h = new Arch(Math.log(6.626070040e-34)), // kg      m^2 s^{-1}
-//Boltzmann = new Arch(Math.log(1.38064852e-23)), // J K^{-1}
-/*
-   2014 CODATA recommended values
-   http://physics.nist.gov/constants
- */
-//tau = new Arch(Math.log(2 * Math.PI), 0.25),
-//two = new Arch(Math.log(2)),
-
-//kg = c.inv          .mul(G)    .mul(h.inv).mul(tau).log.mul(two.inv).exp,
-//m  = c.mul(c).mul(c).mul(G.inv).mul(h.inv).mul(tau).log.mul(two.inv).exp,
-//s  = m.mul(c)
-
-var
 e, touch,
 isFixed = function() {
   return e.hasOwnProperty('value')

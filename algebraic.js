@@ -344,17 +344,18 @@ Reflect.defineProperty(Arch, 'unity', { value: new Arch })
 Reflect.defineProperty(Arch.prototype, 'zero', { value: Arch.zero })
 Reflect.defineProperty(Arch.prototype, 'unity', { value: Arch.unity })
 
-function parseArch(a) {
-  var _ = a.split('.'), ord, arg
-
-  _ = [0, 1, 2].map(function (i) {
-    return _[i] || '0'
-  })
-  ord = parseFloat(_[0] + '.' + _[1])
-  arg = parseFloat(      '0.' + _[2])
-  _ = new Arch(ord, arg)
-  return a.indexOf('X') === -1 ? _.log : _
-}
+const parseArch = (a) => (
+  (([x, y, z]) => (
+    ((ord, arg) => (
+      ((_) => (
+        a.includes('X') ? _ : _.log
+      ))(new Arch(ord, arg))
+    ))(
+      parseFloat((x || '0') + '.' + (y || '0')),
+      parseFloat(            '0.' + (z || '0'))
+    )
+  ))(a.split('.'))
+)
 Arch.precision = 8
 
 const c  = 299792458       .log
