@@ -135,6 +135,15 @@ class Algebraic {
           })(this.valueOf(), 7)
         )
       }
+    }),
+    defineProperty(prototype, 'toArch', {
+      get() {
+        return (
+          this > 0 ? new Arch(this.log) :
+          this < 0 ? new Arch(this.neg.log, 0.5) :
+          Arch.zero
+        )
+      }
     })
   ))(Number),
   (({ prototype }) => (
@@ -186,46 +195,107 @@ class Arch extends Algebraic {
   }
   get _arg() {
     return (
-      (({ arg }) => {
-        arg < 0.5 || (arg -= 1)
-        return arg
-      })(this)
+      (({ isZero, arg }) => (
+        isZero ? undefined :
+        arg < 0.5 ? arg :
+        arg - 1
+      ))(this)
     )
   }
-  get amp() { return this._arg * PI2 }
-  eql(a) { return a !== 0 && this.ord === a.ord && this.arg === a.arg }
-  get unit() { return new Arch(0, this.arg) }
-  get body() { return new Arch(this.ord, 0) }
-  get shift() { return new Arch(this.ord + 1, this.arg) }
+  get amp() {
+    return (
+      (({ isZero, _arg }) => (
+        isZero ? undefined :
+        _arg * PI2
+      ))(this)
+    )
+  }
+  eql(a) {
+    return (
+      (({ ord, arg }) => (
+        ord === a.ord && arg === a.arg
+      ))(this)
+    )
+  }
+  get unit() {
+    return (
+      (({ isZero, unity, arg }) => (
+        isZero ? unity :
+        new Arch(0, arg)
+      ))(this)
+    )
+  }
+  get body() {
+    return (
+      (({ isZero, ord }) => (
+        isZero ? this : new Arch(ord)
+      ))(this)
+    )
+  }
+  get shift() {
+    return (
+      (({ isZero, ord, arg }) => (
+        isZero ? this : new Arch(ord + 1, arg)
+      ))(this)
+    )
+  }
   get succ() { return this.exp.shift.log }
-  get conj() { return new Arch(this.ord, this.arg.neg) }
-  get inv() { return new Arch(this.ord.neg, this.arg.neg) }
+  get conj() {
+    return (
+      (({ isZero, ord, arg }) => (
+        isZero ? this :
+        new Arch(ord, arg.neg)
+      ))
+    )
+  }
+  get inv() {
+    return (
+      (({ isZero, ord, arg }) => (
+        isZero ? undefined :
+        new Arch(ord.neg, arg.neg)
+      ))(this)
+    )
+  }
   mul(a) {
     return (
-      a === 0 ? 0 :
-      new Arch(this.ord + a.ord, this.arg + a.arg)
+      (({ isZero, zero, ord, arg }) => (
+        isZero || a.isZero ? zero :
+        new Arch(ord + a.ord, arg + a.arg)
+      ))(this)
     )
   }
-  get neg() { return new Arch(this.ord, this.arg + 0.5) }
+  get neg() {
+    return (
+      (({ isZero, ord, arg }) => (
+        isZero ? this :
+        new Arch(ord, arg + 0.5)
+      ))(this)
+    )
+  }
   add(a) {
     return (
-      a === 0 ? this :
-      this.neg.eql(a) ? 0 :
-      this.ord < a.ord ? a.add(this) :
-      this.mul(this.inv.mul(a).succ)
+      (({ isZero, neg, zero, ord, inv }) => (
+        isZero ? a :
+        a.isZero ? this :
+        neg.eql(a) ? zero :
+        ord < a.ord ? a.add(this) :
+        this.mul(inv.mul(a).succ)
+      ))(this)
     )
   }
   get log() {
     return (
-      (({ isUnity, ord, amp }) => (
-        isUnity ? 0 :
+      (({ isZero, isUnity, zero, ord, amp }) => (
+        isZero ? undefined :
+        isUnity ? zero :
         new Arch((ord ** 2 + amp ** 2).log * 0.5, amp.atan2(ord) / PI2)
       ))(this)
     )
   }
   get exp() {
     return (
-      (({ ord, amp }) => (
+      (({ isZero, unity, ord, amp }) => (
+        isZero ? unity :
         (({ exp }, { cos, sin }) => (
           new Arch(exp * cos, exp * sin / PI2)
         ))(ord, amp)
@@ -234,13 +304,32 @@ class Arch extends Algebraic {
   }
   pow(a) {
     return (
-      new Arch(this.ord * a, this._arg * a)
+      (({ isZero, unity, zero, ord, _arg, log }) => (
+        isZero ? (
+          a.isZero ? unity : zero
+        ) : (
+          typeof a === 'number' ? (
+            new Arch(ord * a, _arg * a)
+          ) : (
+            log.mul(a).exp
+          )
+        )
+      ))(this)
     )
   }
-  get sqrt() { return this.pow(0.5) }
+  get sqrt() {
+    return (
+      (({ isZero }) => (
+        isZero ? this : this.pow(0.5)
+      ))(this)
+    )
+  }
   toString() {
     return (
-      (({ ord, arg }) => {
+      (({ isZero, ord, arg }) => {
+        if (isZero) {
+          return '0'
+        }
         ord = ord.toFixed(Arch.precision).split('.')
         arg = arg.toFixed(Arch.precision).split('.')
         ord[1] || (ord[1] = '0')
@@ -250,7 +339,10 @@ class Arch extends Algebraic {
     )
   }
 }
-Reflect.defineProperty(Arch.prototype, 'unity', { value: new Arch })
+Reflect.defineProperty(Arch, 'zero', { value: Object.create(Arch.prototype) })
+Reflect.defineProperty(Arch, 'unity', { value: new Arch })
+Reflect.defineProperty(Arch.prototype, 'zero', { value: Arch.zero })
+Reflect.defineProperty(Arch.prototype, 'unity', { value: Arch.unity })
 
 function parseArch(a) {
   var _ = a.split('.'), ord, arg

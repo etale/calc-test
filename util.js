@@ -85,9 +85,6 @@ _vals = {
   'mass t': _(173.07e9).mul(unit.eV),
   'mass W': _(80.4e9).mul(unit.eV),
   'mass Higgs': _(126e9).mul(unit.eV),
-  'Thousand years':
-
-
 }
 _vals['Thousand years']= kilo.mul(_vals.year)
 _vals['Million years'] = prefix.M.mul(_vals.year)
