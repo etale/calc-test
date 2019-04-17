@@ -326,16 +326,15 @@ class Arch extends Algebraic {
   }
   toString() {
     return (
-      (({ isZero, ord, arg }) => {
-        if (isZero) {
-          return '0'
-        }
-        ord = ord.toFixed(Arch.precision).split('.')
-        arg = arg.toFixed(Arch.precision).split('.')
-        ord[1] || (ord[1] = '0')
-        arg[1] || (arg[1] = '0')
-        return ord[0] + '.' + ord[1] + '.' + arg[1] + 'X'
-      })(this)
+      (({ isZero, ord, arg }, { precision }) => (
+        isZero ? '0' :
+        (([x, y], [, z]) => (
+          x + '.' + y + '.' + z + 'X'
+        ))(
+          ord.toFixed(precision).split('.'),
+          arg.toFixed(precision).split('.')
+        )
+      ))(this, Arch)
     )
   }
 }
