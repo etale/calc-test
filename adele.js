@@ -26,7 +26,7 @@ Number.parse = function (a) {
 
 var
 set = function (a) {
-  e.value = a; e.data.textContent = a.toString()
+  e.value = a; e.data.textContent = a.toString(Number.radix)
 },
 reset = function () {
   delete e.value; e.data.textContent = '0'
