@@ -5,36 +5,35 @@ var calc = function () {
 
 !function () {
 
-var html = {};
+const html = {};
 
-['tr', 'td', 'input', 'div', 'table'].forEach(function (a) {
-  html[a] = function() { return document.createElement(a) }
+['tr', 'td', 'input', 'div', 'table'].forEach((a) => {
+  Reflect.defineProperty(html, a, {
+    get() {
+      return document.createElement(a)
+    }
+  })
 })
 
 Arch.precision = 6
 
-var
-e, touch,
-isFixed = function() {
-  return e.hasOwnProperty('value')
-},
-fix = function() {
+let e, touc,
+const isFixed = () => (
+  e.hasOwnProperty('value')
+)
+const fix = () => {
   e.value || set(parseArch(e.data.textContent))
-},
-fixAsIs = function() {
+}
+const fixAsIs = () => {
   set(e.value ? e.value.exp : parseArch(e.data.textContent + 'X'))
-},
-moveFocus = function() {
+}
+const moveFocus = function() {
   e.classList.remove('focus')
   e = this.cell
   e.classList.add('focus')
-},
-makeCell = function() {
-  var
-  cell  = html.tr(),
-  label = html.td(),
-  input = html.input(),
-  data  = html.td()
+}
+const makeCell = function() {
+  const { tr: cell, td: label, input, td: data } = html
 
   label.appendChild(input)
   cell.appendChild(label)
@@ -63,7 +62,7 @@ makeCell = function() {
     } else
     {
       this.cell.data[touch] = function() {
-        fix(); e.value && push(); set(this.cell.value)
+        fix(); e.value.isZero || push(); set(this.cell.value)
       }
       if (e === this.cell) {
         fix()
@@ -83,30 +82,33 @@ makeCell = function() {
   data[touch] = moveFocus
 
   return cell
-},
-push = function() {
+}
+const push = () => {
   calc.display.insertBefore(makeCell(), e.nextSibling)
   e.nextSibling.data[touch]()
-},
-pop = function() {
-  var _ = e.value
-
-  e.previousSibling &&
-  (e.previousSibling.data[touch](), calc.display.removeChild(e.nextSibling))
-
-  return _
-},
-set = function(a) {
+}
+const pop = () => (
+  (({ value, previousSibling, nextSibling }) => (
+    previousSibling && (
+      previousSibling.data[touch](),
+      calc.display.removeChild(nextSibling)
+    ),
+    value
+  ))(e)
+)
+const set = (a) => {
   e.value = a; e.data.textContent = a.toString()
-},
-numeric = function() {
-  var label = this.textContent, _
+}
+const numeric = function() {
+  (({ textContent }, { value, data }) => {
+    value && push()
+    data.textContent = (
+      data.textContent === '0' ? '' : data.textContent
+    ) + textContent
+  })(this, e)
 
-  e.value && push()
-  _ = e.data
-  _.textContent = (_.textContent === '0' ? '' : _.textContent) + label
-},
-keys = {
+}
+const keys = {
   '0': numeric,
   '1': numeric,
   '2': numeric, '3': numeric, '4': numeric, '5': numeric,
@@ -145,28 +147,28 @@ keys = {
     }
   },
   'kg': function() {
-    fix(); e.value && push(); set(kg)
+    fix(); e.value.isZero || push(); set(kg)
   },
   'm': function() {
-    fix(); e.value && push(); set(m)
+    fix(); e.value.isZero || push(); set(m)
   },
   's': function() {
-    fix(); e.value && push(); set(s)
+    fix(); e.value.isZero || push(); set(s)
   },
   'exp': function() {
     fixAsIs()
   },
   'log': function() {
-    e.value || set(parseArch(e.data.textContent)); e.value && set(e.value.log)
+    e.value || set(parseArch(e.data.textContent)); e.value.isZero || set(e.value.log)
   },
   '/': function() {
-    fix(); e.value && set(e.value.inv)
+    fix(); e.value.isZero || set(e.value.inv)
   },
   '−': function() {
-    fix(); e.value && set(e.value.neg)
+    fix(); e.value.isZero || set(e.value.neg)
   },
   '†': function() {
-    fix(); e.value && set(e.value.conj)
+    fix(); e.value.isZero || set(e.value.conj)
   },
   ' ': function() {
     var _
