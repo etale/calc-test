@@ -113,7 +113,7 @@ class Algebraic {
           !(this % 3) ? 3 :
           !(this % 5) ? 5 :
           ((_, p) => {
-            while (p * p < _) {
+            while (p * p <= _) {
               if (!(_ % p)) return p // 7
               p += 4
               if (!(_ % p)) return p // 11
@@ -156,7 +156,7 @@ class Algebraic {
           !(this % 3n) ? 3n :
           !(this % 5n) ? 5n :
           ((_, p) => {
-            while (p * p < _) {
+            while (p * p <= _) {
               if (!(_ % p)) return p // 7
               p += 4n
               if (!(_ % p)) return p // 11
