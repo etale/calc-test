@@ -37,12 +37,12 @@ div {
 <script src="algebraic.js"></script>
 <script>
 var delta
-, _ = function (a, b) { return new Arch(a.log, b) }
-, _c = _(299792458)                 //         m   s^{-1}
-, _G = _(2 * PI2 * 6.67408e-11)
-, _h = _(6.62607015e-34)           // kg      m^2 s^{-1}
-, _Boltzmann = _(1.380649e-23)    // J K^{-1}
-, _mu0 = _(2 * PI2 * 1e-7) // N A^{-2}
+, _ = (a, b) => new Arch(a.log, b)
+//, _c = _(299792458)                 //         m   s^{-1}
+//, _G = _(2 * PI2 * 6.67408e-11)
+//, _h = _(6.62607015e-34)           // kg      m^2 s^{-1}
+//, _Boltzmann = _(1.380649e-23)    // J K^{-1}
+//, _mu0 = _(2 * PI2 * 1e-7) // N A^{-2}
 /*
    2014 CODATA recommended values
    http://physics.nist.gov/constants
@@ -60,8 +60,6 @@ var delta
 , Ei = Ki.pow(6)
 , Zi = Ki.pow(7)
 , Yi = Ki.pow(8)
-//, b = two.log
-//, B = _(8).mul(b)
 , KiB = Ki.mul(B)
 , MiB = Mi.mul(B)
 , GiB = Gi.mul(B)
@@ -70,7 +68,7 @@ var delta
 , EiB = Ei.mul(B)
 , ZiB = Zi.mul(B)
 , YiB = Yi.mul(B)
-, c_ = _c.inv, G_ = _G.inv, h_ = _h.inv
+//, c_ = _c.inv, G_ = _G.inv, h_ = _h.inv
 prefix[''] = new Arch
 prefix.k = _(1000)
 prefix.M = prefix.k.mul(prefix.k)
@@ -94,9 +92,9 @@ unit.g = prefix.m.mul(kg)
 unit.Hz = s.inv
 unit.N  = kg.mul(m).mul(s.pow(-2))
 unit.J  = unit.N.mul(m)
-unit.A  = _mu0.mul(unit.N).sqrt
+unit.A  = C.mul(s.inv)
 unit.K  = K
-unit.C  = unit.A.mul(s)
+unit.C  = C
 unit.W  = unit.J.mul(unit.Hz)
 unit.V  = unit.W.mul(unit.A.inv)
 unit.Ω  = unit.V.mul(unit.A.inv)
