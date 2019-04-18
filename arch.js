@@ -62,7 +62,7 @@ const makeCell = function() {
     } else
     {
       this.cell.data[touch] = function() {
-        fix(); e.value.isZero || push(); set(this.cell.value)
+        fix(); e.value && push(); set(this.cell.value)
       }
       if (e === this.cell) {
         fix()
@@ -91,7 +91,7 @@ const pop = () => (
   (({ value, previousSibling, nextSibling }) => (
     previousSibling && (
       previousSibling.data[touch](),
-      calc.display.removeChild(nextSibling)
+      calc.display.removeChild(e.nextSibling)
     ),
     value
   ))(e)
