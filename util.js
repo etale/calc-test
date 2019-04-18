@@ -36,6 +36,14 @@ const unit = {
 }
 unit.eV  = e.mul(unit.V)
 
+const magnitude2arch = (M) => (
+  ((coef) => (
+    coef.mul(unit.J)
+  ))(
+    new Arch(10 .log * (4.8 + 1.5 * M))
+  )
+)
+
 {
   g: kg.mul(kilo.inv),
   m, s, C, K, mol, cd
