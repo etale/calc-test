@@ -40,6 +40,15 @@ makeCell = function() {
   cell.appendChild(label)
   cell.appendChild(data)
 
+  /*
+  <tr class="focus"> cell
+    <td>             label
+      <input>        input
+    </td>
+    <td>0</td>       data
+  </tr>
+  */
+
   cell.label = input
   cell.data = data
 

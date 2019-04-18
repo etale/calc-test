@@ -185,6 +185,16 @@ class Algebraic {
 Reflect.setPrototypeOf(Number.prototype, Algebraic.prototype)
 Reflect.setPrototypeOf(BigInt.prototype, Algebraic.prototype)
 
+// a should be unsigned.
+const parseBigInt = (a, radix = 10) => (
+  [...a].reduce(
+    (prev, curr) => (
+      prev * BigInt(radix) + BigInt(parseInt(curr, radix))
+    ),
+    0n
+  )
+)
+
 const PI2 = Math.PI * 2
 
 class Arch extends Algebraic {
