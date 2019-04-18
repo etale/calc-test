@@ -62,7 +62,7 @@ const makeCell = function() {
     } else
     {
       this.cell.data[touch] = function() {
-        fix(); e.value && push(); set(this.cell.value)
+        fix(); e.value.isZero || push(); set(this.cell.value)
       }
       if (e === this.cell) {
         fix()
@@ -100,13 +100,8 @@ const set = (a) => {
   e.value = a; e.data.textContent = a.toString()
 }
 const numeric = function() {
-  (({ textContent }, { value, data }) => {
-    value && push()
-    data.textContent = (
-      data.textContent === '0' ? '' : data.textContent
-    ) + textContent
-  })(this, e)
-
+  e.value && push()
+  e.data.textContent = (e.data.textContent === '0' ? '' : e.data.textContent) + this.textContent
 }
 const keys = {
   '0': numeric,
