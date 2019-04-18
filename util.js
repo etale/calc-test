@@ -63,14 +63,8 @@ unit.eV  = e.mul(unit.V)
   Gy: [[m, 2], [s, -2]],
   Sv: [[m, 2], [s, -2]],
   kat: [[s, -1], [mol, 1]]
-
 }
 
-//unit.F  = unit.C.mul(unit.V.inv)
-//unit.S  = unit.A.mul(unit.V.inv)
-//unit.Wb = unit.V.mul(unit.s)
-//unit.T  = unit.Wb.mul(unit.m.mul(unit.m).inv)
-//unit.H  = unit.Wb.mul(unit.A.inv)
 const Ki = new Arch(1024 .log)
 const bprefix = {
   '': Ki.pow(0),
@@ -84,7 +78,7 @@ const bprefix = {
   Yi: Ki.pow(8)
 }
 const bunit = {
-  B: B
+  B
 }
 let vals = {}
 Reflect.ownKeys(prefix).forEach((p) => {
