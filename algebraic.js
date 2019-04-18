@@ -378,12 +378,12 @@ const b  = 2    .log
 const pi2 = PI2 .log
 const μ0 = b + pi2 - 7 * 10 .log
 
-const kg = new Arch((-  _c + _G - _h + b) / 2 + pi2    , 0.125)
-const m  = new Arch(( 3*_c - _G - _h - b) / 2          , 0.125)
-const s  = new Arch(( 5*_c - _G - _h - b) / 2          , 0.125)
-const K  = new Arch((-5*_c + _G - _h + b) / 2 + pi2 + k, 0.125)
+const kg = new Arch((-  _c + _G - _h + b) / 2 + pi2     , 0.125)
+const m  = new Arch(( 3*_c - _G - _h - b) / 2           , 0.125)
+const s  = new Arch(( 5*_c - _G - _h - b) / 2           , 0.125)
+const K  = new Arch((-5*_c + _G - _h + b) / 2 + pi2 + _k, 0.125)
 const C  = new Arch((   _c      - _h + b - 7 * 10 .log
-                                        ) / 2 + pi2    , 0.125)
+                                        ) / 2 + pi2     , 0.125)
 const B  = new Arch((3*b + b.log))
 const mol = new Arch(_NA)
 const cd = new Arch(- _Kcd).mul(kg).mul(m.pow(2)).mul(s.pow(-3))
