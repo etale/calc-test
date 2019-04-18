@@ -17,7 +17,7 @@ const html = {};
 
 Arch.precision = 6
 
-let e, touc,
+let e, touch
 const isFixed = () => (
   e.hasOwnProperty('value')
 )
