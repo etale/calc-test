@@ -60,7 +60,7 @@ refresh = function () {
   var _ = calc.display.firstChild
 
   while (_) {
-    _.value && (_.data.textContent = _.value.toString())
+    _.value && (_.data.textContent = _.value.toString(Number.radix))
     _ = _.nextSibling
   }
 },
