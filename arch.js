@@ -196,10 +196,10 @@ const keys = {
   }
 }
 
-touch = html.div().hasOwnProperty('ontouchend') ? 'ontouchend' : 'onmouseup';
+touch = html.div.hasOwnProperty('ontouchend') ? 'ontouchend' : 'onmouseup';
 
-calc.display = html.table()
-calc.keypad  = html.table()
+calc.display = html.table
+calc.keypad  = html.table
 
 e = makeCell()
 calc.display.appendChild(e)
@@ -209,10 +209,10 @@ calc.display.classList.add('display');
   ['kg' , 'm', 's', '4', '5', '6'],
   ['log', ' ', '/', '1', '2', '3'],
   ['exp', '+', '−', '0', '.', '†'] ].forEach(function (tds) {
-  var tr = html.tr()
+  var tr = html.tr
 
   tds.forEach(function (td) {
-    var _ = html.td()
+    var _ = html.td
 
     _.textContent = td
     _[touch] = keys[td]
