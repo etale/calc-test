@@ -255,7 +255,7 @@ class Arch extends Algebraic {
       (({ isZero, ord, arg }) => (
         isZero ? this :
         new Arch(ord, arg.neg)
-      ))
+      ))(this)
     )
   }
   get inv() {
@@ -366,14 +366,16 @@ const parseArch = (a) => (
   ))(a.split('.'))
 )
 Arch.precision = 8
-
-const c  = 299792458       .log
-const G  = 6.67408e-11     .log
-const h  = 6.62607015e-34  .log
-const k  = 1.380649e-23    .log
-const nu_e  = 1.602176634e-19 .log
-const b  = 2               .log
-const pi2 = PI2            .log
+const _Cs  = 9192631770      .log
+const _c   = 299792458       .log
+const _G   = 6.67408e-11     .log
+const _h   = 6.62607015e-34  .log
+const _k   = 1.380649e-23    .log
+const _e   = 1.602176634e-19 .log
+const _NA  = 6.02214076e23   .log
+const _Kcd = 683             .log
+const b  = 2    .log
+const pi2 = PI2 .log
 const μ0 = b + pi2 - 7 * 10 .log
 
 const kg = new Arch((-  c + G - h + b) / 2 + pi2    , 0.125)

@@ -36,6 +36,36 @@ const unit = {
 }
 unit.eV  = e.mul(unit.V)
 
+{
+  g: kg.mul(kilo.inv),
+  m, s, C, K, mol, cd
+}
+
+{
+  rad: [],
+  sr: [],
+  Hz: [[s, -1]],
+  N: [[kg, 1], [m, 1], [s, -2]],
+  Pa: [[kg, 1], [m, -1], [s, -2]],
+  J: [[kg, 1], [m, 2], [s, -2]],
+  W: [[kg, 1], [m, 2], [s, -3]],
+  A: [[s, -1], [C, 1]],
+  V: [[kg, 1], [m, 2], [s, -2], [C, -1]],
+  F: [[kg, -1], [m, -2], [s, 2], [C, 2]],
+  Ω: [[kg, 1], [m, 2], [s, -1], [C, -2]],
+  S: [[kg, -1], [m, -2], [s, 1], [C, 2]],
+  Wb: [[kg, 1], [m, 2], [s, -1], [C, -1]],
+  T: [[kg, 1], [s, -1], [C, -1]],
+  H: [[kg, 1], [m, 2], [C, -2]],
+  lm: [[cd, 1]],
+  lx: [[m, -2], [cd, 1]],
+  Bq: [[s, -1]],
+  Gy: [[m, 2], [s, -2]],
+  Sv: [[m, 2], [s, -2]],
+  kat: [[s, -1], [mol, 1]]
+
+}
+
 //unit.F  = unit.C.mul(unit.V.inv)
 //unit.S  = unit.A.mul(unit.V.inv)
 //unit.Wb = unit.V.mul(unit.s)
