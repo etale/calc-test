@@ -163,19 +163,6 @@ class Algebraic {
       }
     })
   ))(Number),
-  /*
-_.toString = function (a) {
-  var _
-
-  a || (a = Number.radix)
-  _ = this.body()._toString(a).split('').reverse()
-
-  return (this < 0 ? '-' : '') + (
-    Number.isLittle ? [_[0], '.'].concat(_.slice(1)) :
-                      _.reverse()
-  ).join('')
-}
-  */
   (({ prototype }) => (
     defineProperty(prototype, 'zero', { value: 0n }),
     defineProperty(prototype, 'unity', { value: 1n }),
@@ -232,7 +219,7 @@ _.toString = function (a) {
 Reflect.setPrototypeOf(Number.prototype, Algebraic.prototype)
 Reflect.setPrototypeOf(BigInt.prototype, Algebraic.prototype)
 
-// a should be unsigned.
+// `a` should be unsigned.
 const parseBigInt = (a, radix = 10) => (
   [...a].reduce(
     (prev, curr) => (
