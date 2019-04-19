@@ -381,6 +381,18 @@ class Arch extends Algebraic {
       ))(this, Arch)
     )
   }
+  get asString() {
+    return (
+      (({ isZero, ord, arg }, { precision }) => (
+        isZero ? '0' :
+        (([x, y], [, z]) => (
+          (y += '00000000'),
+          (z += '00000000'),
+          x + '.' + y.slice(0, precision) + '.' + z.slice(0, precision) + 'X'
+        ))(ord.asString.split('.'), arg.asString.split('.'))
+      ))(this, Arch)
+    )
+  }
 }
 Reflect.defineProperty(Arch, 'zero', { value: Object.create(Arch.prototype) })
 Reflect.defineProperty(Arch, 'unity', { value: new Arch })
@@ -544,6 +556,3 @@ class Adele extends Algebraic {
   }
 }
 const nil = new Adele(0n, 0n, 1n)
-module.exports = {
-  Arch, Adele
-}

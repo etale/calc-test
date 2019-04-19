@@ -94,6 +94,14 @@ const makeCell = function() {
 
   return cell
 }
+const refresh = () => {
+  var _ = calc.display.firstChild
+
+  while (_) {
+    _.value && (_.data.textContent = _.value.asString)
+    _ = _.nextSibling
+  }
+}
 const push = () => {
   calc.display.insertBefore(makeCell(), e.nextSibling)
   e.nextSibling.data[touch]()
@@ -107,8 +115,13 @@ const pop = () => (
     value
   ))(e)
 )
+/*
 const set = (a) => {
   e.value = a; e.data.textContent = a.toString()
+}
+*/
+const set = (a) => {
+  e.value = a; e.data.textContent = a.asString
 }
 const numeric = function() {
   e.value && push()
