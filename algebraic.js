@@ -208,6 +208,23 @@ _.toString = function (a) {
           })(this.valueOf(), 7n)
         )
       }
+    }),
+    defineProperty(prototype, 'asString', {
+      get() {
+        return (
+          (({ body }) => (
+            (this < 0 ? '-' : '') + (
+              ((_) => (
+                Number.isLittle
+                ? [_[0], '.'].concat(_.slice(1))
+                : _.reverse()
+              ))(
+                [...body.toString(Number.radix)].reverse()
+              )
+            )
+          ))(this)
+        )
+      }
     })
   ))(BigInt)
 ))(Reflect)
