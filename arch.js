@@ -1,7 +1,8 @@
 var calc = function () {
   Number.radix = parseInt(location.hash.slice(1)) || 10
-  document.body.appendChild(calc.display)
-  document.body.appendChild(calc.keypad)
+  calc.refresh()
+  document.body === calc.display.parentNode || document.body.appendChild(calc.display)
+  document.body === calc.keypad.parentNode || document.body.appendChild(calc.keypad)
 }
 
 !function () {
@@ -94,7 +95,7 @@ const makeCell = function() {
 
   return cell
 }
-const refresh = () => {
+calc.refresh = () => {
   var _ = calc.display.firstChild
 
   while (_) {
@@ -243,4 +244,4 @@ calc.keypad.classList.add('keypad')
 
 }()
 
-onload = calc
+onload = onhashchange = calc
