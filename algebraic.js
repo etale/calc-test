@@ -538,23 +538,21 @@ class Adele extends Algebraic {
   toString(a = 10) {
     return (
       this.eql(nil) ? 'nil' :
-      (({ n, r, s }, _) => {
-        n.isZero  || (_ += n.toString(a) + '\\')
-                      _ += r.toString(a)
-        s.isUnity || (_ += '/' + s.toString(a))
-        return _
-      })(this, '')
+      (({ n, r, s }, _) => (
+        (n.isZero  ? '' : (      n.asString + '\\')) +
+        (                        r.asString        ) +
+        (s.isUnity ? '' : ('/' + s.asString       ))
+      ))(this)
     )
   }
   get asString() {
     return (
       this.eql(nil) ? 'nil' :
-      (({ n, r, s }, _) => {
-        n.isZero  || (_ += n.asString + '\\')
-                      _ += r.asString
-        s.isUnity || (_ += '/' + s.asString)
-        return _
-      })(this, '')
+      (({ n, r, s }, _) => (
+        (n.isZero  ? '' : (      n.asString + '\\')) +
+        (                        r.asString        ) +
+        (s.isUnity ? '' : ('/' + s.asString       ))
+      ))(this)
     )
   }
 }
