@@ -386,6 +386,8 @@ class Arch extends Algebraic {
       (({ isZero, ord, arg }, { precision }) => (
         isZero ? '0' :
         (([x, y], [, z]) => (
+          y || (y = ''),
+          z || (z = ''),
           (y += '00000000'),
           (z += '00000000'),
           x + '.' + y.slice(0, precision) + '.' + z.slice(0, precision) + 'X'
