@@ -551,7 +551,7 @@ class Adele extends Algebraic {
       this.eql(nil) ? 'nil' :
       (({ n, r, s }, _) => {
         n.isZero  || (_ += n.asString + '\\')
-                      _ += r.rsString
+                      _ += r.asString
         s.isUnity || (_ += '/' + s.asString)
         return _
       })(this, '')
