@@ -148,17 +148,21 @@ class Algebraic {
     defineProperty(prototype, 'asString', {
       get() {
         return (
-          (({ body }) => (
+          (({ body }, { isLittle, radix }) => (
             (this < 0 ? '-' : '') + (
               ((_) => (
-                Number.isLittle
+                isLittle
                 ? [_[0], '.'].concat(_.slice(1))
                 : _.reverse()
               ))(
-                [...body.toString(Number.radix)].reverse()
+                [...(
+                  radix === 10
+                ? body.toFixed(20)
+                : body.toString(radix)
+                )].reverse()
               )
             ).join('')
-          ))(this)
+          ))(this, Number)
         )
       }
     })
