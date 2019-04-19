@@ -157,7 +157,7 @@ class Algebraic {
               ))(
                 [...body.toString(Number.radix)].reverse()
               )
-            )
+            ).join('')
           ))(this)
         )
       }
@@ -221,7 +221,7 @@ _.toString = function (a) {
               ))(
                 [...body.toString(Number.radix)].reverse()
               )
-            )
+            ).join('')
           ))(this)
         )
       }
