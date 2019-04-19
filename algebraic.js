@@ -544,3 +544,6 @@ class Adele extends Algebraic {
   }
 }
 const nil = new Adele(0n, 0n, 1n)
+module.exports = {
+  Arch, Adele
+}

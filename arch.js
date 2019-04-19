@@ -1,9 +1,20 @@
 var calc = function () {
+  Number.radix = parseInt(location.hash.slice(1)) || 10
   document.body.appendChild(calc.display)
   document.body.appendChild(calc.keypad)
 }
 
 !function () {
+
+Number.radix || Reflect.set(Number, 'radix', 10)
+
+Number.parse = (a) => (
+  (([x, y]) => (
+    ((i) => (
+      parseInt(i, Number.radix) / Number.radix ** y.length
+    ))([x, y].join(''))
+  ))(a.split('.'))
+)
 
 const html = {};
 
@@ -18,9 +29,9 @@ const html = {};
 Arch.precision = 6
 
 let e, touch
-const isFixed = () => (
-  e.hasOwnProperty('value')
-)
+//const isFixed = () => (
+//  e.hasOwnProperty('value')
+//)
 const fix = () => {
   e.value || set(parseArch(e.data.textContent))
 }
@@ -88,7 +99,7 @@ const push = () => {
   e.nextSibling.data[touch]()
 }
 const pop = () => (
-  (({ value, previousSibling, nextSibling }) => (
+  (({ value, previousSibling }) => (
     previousSibling && (
       previousSibling.data[touch](),
       calc.display.removeChild(e.nextSibling)
