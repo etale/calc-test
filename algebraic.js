@@ -144,8 +144,38 @@ class Algebraic {
           Arch.zero
         )
       }
+    }),
+    defineProperty(prototype, 'asString', {
+      get() {
+        return (
+          (({ body }) => (
+            (this < 0 ? '-' : '') + (
+              ((_) => (
+                Number.isLittle
+                ? [_[0], '.'].concat(_.slice(1))
+                : _.reverse()
+              ))(
+                [...body.toString(Number.radix)].reverse()
+              )
+            )
+          ))(this)
+        )
+      }
     })
   ))(Number),
+  /*
+_.toString = function (a) {
+  var _
+
+  a || (a = Number.radix)
+  _ = this.body()._toString(a).split('').reverse()
+
+  return (this < 0 ? '-' : '') + (
+    Number.isLittle ? [_[0], '.'].concat(_.slice(1)) :
+                      _.reverse()
+  ).join('')
+}
+  */
   (({ prototype }) => (
     defineProperty(prototype, 'zero', { value: 0n }),
     defineProperty(prototype, 'unity', { value: 1n }),
@@ -495,6 +525,17 @@ class Adele extends Algebraic {
         n.isZero  || (_ += n.toString(a) + '\\')
                       _ += r.toString(a)
         s.isUnity || (_ += '/' + s.toString(a))
+        return _
+      })(this, '')
+    )
+  }
+  get asString() {
+    return (
+      this.eql(nil) ? 'nil' :
+      (({ n, r, s }, _) => {
+        n.isZero  || (_ += n.asString + '\\')
+                      _ += r.rsString
+        s.isUnity || (_ += '/' + s.asString)
         return _
       })(this, '')
     )

@@ -1,5 +1,6 @@
 var calc = function () {
   Number.radix = parseInt(location.hash.slice(1)) || 10
+  Number.isLittle = false
   calc.refresh(); calc.shrink()
   document.body === calc.display.parentNode || document.body.appendChild(calc.display)
   document.body === calc.keypad .parentNode || document.body.appendChild(calc.keypad)
@@ -26,7 +27,7 @@ Number.parse = function (a) {
 
 var
 set = function (a) {
-  e.value = a; e.data.textContent = a.toString(Number.radix)
+  e.value = a; e.data.textContent = a.asString
 },
 reset = function () {
   delete e.value; e.data.textContent = '0'
@@ -60,7 +61,7 @@ refresh = function () {
   var _ = calc.display.firstChild
 
   while (_) {
-    _.value && (_.data.textContent = _.value.toString(Number.radix))
+    _.value && (_.data.textContent = _.value.asString)
     _ = _.nextSibling
   }
 },
