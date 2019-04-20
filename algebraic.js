@@ -594,7 +594,7 @@ class Adele extends Algebraic {
 const nil = new Adele(0n, 0n, 1n)
 
 class Fixed extends Algebraic {
-  constructor(r, precision, radix = 10) {
+  constructor(r = 0n, precision = 0, radix = 10) {
     super()
     this.r = r
     this.precision = precision
@@ -623,6 +623,20 @@ class Fixed extends Algebraic {
     return (
       (({ r, precision, radix }) => (
         new Fixed(BigInt(radix) ** BigInt(precision), precision, radix)
+      ))(this)
+    )
+  }
+  get unit() {
+    return (
+      (({ r, precision, radix }) => (
+        new Fixed(r.unit * BigInt(radix) ** BigInt(precision), precision, radix)
+      ))(this)
+    )
+  }
+  get body() {
+    return (
+      (({ r, precision, radix }) => (
+        new Fixed(r.body, precision, radix)
       ))(this)
     )
   }
@@ -657,7 +671,7 @@ class Fixed extends Algebraic {
   mul(a) {
     return (
       (([_, a]) => (
-        _.mul(a)
+        _._mul(a)
       ))(coerce(this, a))
     )
   }
@@ -673,20 +687,4 @@ class Fixed extends Algebraic {
       ))(this)
     )
   }
-}
-
-const foo = function () {
-  return (
-    (({ body, unit }, i) => {
-      while (body > 2) {
-        body /= 2
-        i += 1
-      }
-      while (body < 1) {
-        body *= 2
-        i -= 1
-      }
-      return [body * 2 ** 52, i]
-    })(this, 0)
-  )
 }
