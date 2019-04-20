@@ -170,7 +170,7 @@ class Algebraic {
               body *= 2
               i -= 1
             }
-            return [body * 2 ** 52, i]
+            return [body * 2 ** 52, 2 ** (i - 52)]
           })(this, 0)
         )
       }
