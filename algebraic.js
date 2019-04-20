@@ -158,7 +158,7 @@ class Algebraic {
         )
       }
     }),
-    defineProperty(prototype, 'intexp', {
+    defineProperty(prototype, 'ub2', {
       get() {
         return (
           (({ body, unit }, i) => {
