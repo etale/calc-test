@@ -612,6 +612,13 @@ class Fixed extends Algebraic {
       ))(this)
     )
   }
+  eql(a) {
+    return (
+      (({ r, precision, radix }) => (
+        r.eql(a.r) && precision.eql(a.precision) && radix.eql(a.radix)
+      ))(this)
+    )
+  }
   get zero() {
     return (
       (({ r, precision, radix }) => (
