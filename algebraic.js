@@ -31,6 +31,19 @@ class Algebraic {
   }
   div(a) { return this.divmod(a)[0] }
   mod(a) { return this.divmod(a)[1] }
+  split(a) {
+    return (
+      (({ body }, arr) => {
+        while (!body.isZero) {
+          (([q, r]) => {
+            body = q
+            arr.push(r)
+          })(body.divmod(radix))
+        }
+        return arr.reverse()
+      })(this, [])
+    )
+  }
   gcd(a) {
     return (
       ((_) => {
@@ -142,6 +155,23 @@ class Algebraic {
           this > 0 ? new Arch(this.log) :
           this < 0 ? new Arch(this.neg.log, 0.5) :
           Arch.zero
+        )
+      }
+    }),
+    defineProperty(prototype, 'intexp', {
+      get() {
+        return (
+          (({ body, unit }, i) => {
+            while (body > 2) {
+              body /= 2
+              i += 1
+            }
+            while (body < 1) {
+              body *= 2
+              i -= 1
+            }
+            return [body * 2 ** 52, i]
+          })(this, 0)
         )
       }
     }),
@@ -562,3 +592,101 @@ class Adele extends Algebraic {
   }
 }
 const nil = new Adele(0n, 0n, 1n)
+
+class Fixed extends Algebraic {
+  constructor(r, precision, radix = 10) {
+    super()
+    this.r = r
+    this.precision = precision
+    this.radix = radix
+  }
+  coerce(a) {
+    return (
+      (({ r, precision, radix }) => (
+        precision === a.precision ? [this, a] :
+        precision < a.precision ? (
+          [this, new Fixed(a.r / (BigInt(radix) ** BigInt(a.precision - precision)), precision, radix)]
+        ) : (
+          [new Fixed(r / (BigInt(radix) ** BigInt(precision - a.precision)), precision, radix), a]
+        )
+      ))(this)
+    )
+  }
+  get zero() {
+    return (
+      (({ r, precision, radix }) => (
+        new Fixed(r.zero, precision, radix)
+      ))(this)
+    )
+  }
+  get unity() {
+    return (
+      (({ r, precision, radix }) => (
+        new Fixed(BigInt(radix) ** BigInt(precision), precision, radix)
+      ))(this)
+    )
+  }
+  get neg() {
+    return (
+      (({ r, precision, radix }) => (
+        new Fixed(r.neg, precision, radix)
+      ))(this)
+    )
+  }
+  add(a) {
+    return (
+      (([_, a]) => (
+        _._add(a)
+      ))(this.coerce(a))
+    )
+  }
+  _add(a) {
+    return (
+      (({ r, precision, radix }) => (
+        new Fixed(r + a.r, precision, radix)
+      ))(this)
+    )
+  }
+  get inv() {
+    return (
+      (({ r, precision, radix }) => (
+        new Fixed(BigInt(radix) ** BigInt(precision * 2) / r, precision, radix)
+      ))(this)
+    )
+  }
+  mul(a) {
+    return (
+      (([_, a]) => (
+        _.mul(a)
+      ))(coerce(this, a))
+    )
+  }
+  _mul(a) {
+    (({ r, precision, radix }) => (
+      new Fixed((r * a.r)/(BigInt(radix) ** BigInt(precision)), precision)
+    ))(this)
+  }
+  get asString() {
+    return (
+      (({ r, precision, radix }) => (
+        0
+      ))(this)
+    )
+  }
+}
+
+const foo = function () {
+  return (
+    (({ body, unit }, i) => {
+      while (body > 2) {
+        body /= 2
+        i += 1
+      }
+      while (body < 1) {
+        body *= 2
+        i -= 1
+      }
+      return [body * 2 ** 52, i]
+    })(this, 0)
+  )
+}
