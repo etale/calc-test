@@ -683,9 +683,11 @@ class Fixed extends Algebraic {
     )
   }
   _mul(a) {
-    (({ r, precision, radix }) => (
-      new Fixed((r * a.r)/(BigInt(radix) ** BigInt(precision)), precision)
-    ))(this)
+    return (
+      (({ r, precision, radix }) => (
+        new Fixed((r * a.r)/(BigInt(radix) ** BigInt(precision)), precision)
+      ))(this)
+    )
   }
   get asString() {
     return (
