@@ -679,7 +679,7 @@ class Fixed extends Algebraic {
     return (
       (([_, a]) => (
         _._mul(a)
-      ))(coerce(this, a))
+      ))(this.coerce(a))
     )
   }
   _mul(a) {
