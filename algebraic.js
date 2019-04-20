@@ -38,7 +38,7 @@ class Algebraic {
           (([q, r]) => {
             body = q
             arr.push(r)
-          })(body.divmod(radix))
+          })(body.divmod(a))
         }
         return arr.reverse()
       })(this, [])
@@ -170,7 +170,7 @@ class Algebraic {
               body *= 2
               i -= 1
             }
-            return [body * 2 ** 52, 2 ** (i - 52)]
+            return [unit * body * 2 ** 52, 2 ** (i - 52)]
           })(this, 0)
         )
       }
