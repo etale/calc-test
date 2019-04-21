@@ -187,7 +187,7 @@ class Algebraic {
               ))(
                 [...(
                   radix === 10
-                ? body.toFixed(20)
+                ? body.toBigNum(20)
                 : body.toString(radix)
                 )].reverse()
               )
@@ -409,8 +409,8 @@ class Arch extends Algebraic {
         (([x, y], [, z]) => (
           x + '.' + y + '.' + z + 'X'
         ))(
-          ord.toFixed(precision).split('.'),
-          arg.toFixed(precision).split('.')
+          ord.toBigNum(precision).split('.'),
+          arg.toBigNum(precision).split('.')
         )
       ))(this, Arch)
     )
@@ -593,7 +593,7 @@ class Adele extends Algebraic {
 }
 const nil = new Adele(0n, 0n, 1n)
 
-class Fixed extends Algebraic {
+class BigNum extends Algebraic {
   constructor(r = 0n, precision = 0, radix = 10) {
     super()
     this.r = r
@@ -605,9 +605,9 @@ class Fixed extends Algebraic {
       (({ r, precision, radix }) => (
         precision === a.precision ? [this, a] :
         precision < a.precision ? (
-          [this, new Fixed(a.r / (BigInt(radix) ** BigInt(a.precision - precision)), precision, radix)]
+          [this, new BigNum(a.r / (BigInt(radix) ** BigInt(a.precision - precision)), precision, radix)]
         ) : (
-          [new Fixed(r / (BigInt(radix) ** BigInt(precision - a.precision)), precision, radix), a]
+          [new BigNum(r / (BigInt(radix) ** BigInt(precision - a.precision)), precision, radix), a]
         )
       ))(this)
     )
@@ -622,35 +622,35 @@ class Fixed extends Algebraic {
   get zero() {
     return (
       (({ r, precision, radix }) => (
-        new Fixed(r.zero, precision, radix)
+        new BigNum(r.zero, precision, radix)
       ))(this)
     )
   }
   get unity() {
     return (
       (({ r, precision, radix }) => (
-        new Fixed(BigInt(radix) ** BigInt(precision), precision, radix)
+        new BigNum(BigInt(radix) ** BigInt(precision), precision, radix)
       ))(this)
     )
   }
   get unit() {
     return (
       (({ r, precision, radix }) => (
-        new Fixed(r.unit * BigInt(radix) ** BigInt(precision), precision, radix)
+        new BigNum(r.unit * BigInt(radix) ** BigInt(precision), precision, radix)
       ))(this)
     )
   }
   get body() {
     return (
       (({ r, precision, radix }) => (
-        new Fixed(r.body, precision, radix)
+        new BigNum(r.body, precision, radix)
       ))(this)
     )
   }
   get neg() {
     return (
       (({ r, precision, radix }) => (
-        new Fixed(r.neg, precision, radix)
+        new BigNum(r.neg, precision, radix)
       ))(this)
     )
   }
@@ -664,14 +664,14 @@ class Fixed extends Algebraic {
   _add(a) {
     return (
       (({ r, precision, radix }) => (
-        new Fixed(r + a.r, precision, radix)
+        new BigNum(r + a.r, precision, radix)
       ))(this)
     )
   }
   get inv() {
     return (
       (({ r, precision, radix }) => (
-        new Fixed(BigInt(radix) ** BigInt(precision * 2) / r, precision, radix)
+        new BigNum(BigInt(radix) ** BigInt(precision * 2) / r, precision, radix)
       ))(this)
     )
   }
@@ -685,14 +685,21 @@ class Fixed extends Algebraic {
   _mul(a) {
     return (
       (({ r, precision, radix }) => (
-        new Fixed((r * a.r)/(BigInt(radix) ** BigInt(precision)), precision)
+        new BigNum((r * a.r)/(BigInt(radix) ** BigInt(precision)), precision)
       ))(this)
     )
   }
   get asString() {
     return (
       (({ r, precision, radix }) => (
-        0
+        ((_) => (
+          ((l) => (
+            l > 0 && (
+              _ = Array(l).fill('0').join('') + _
+            ),
+            _.slice(0, _.length - precision) + '.' + _.slice(_.length - precision, -1)
+          ))(precision - _.length)
+        ))(r.toString(radix))
       ))(this)
     )
   }
