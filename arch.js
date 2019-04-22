@@ -10,7 +10,7 @@ var calc = function () {
 Number.radix || Reflect.set(Number, 'radix', 10)
 
 Number.parse = (a) => (
-  (([x, y]) => (
+  (([x, y = '']) => (
     ((i) => (
       parseInt(i, Number.radix) / Number.radix ** y.length
     ))([x, y].join(''))

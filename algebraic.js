@@ -187,7 +187,7 @@ class Algebraic {
               ))(
                 [...(
                   radix === 10
-                ? body.toBigNum(20)
+                ? body.toFixed(20)
                 : body.toString(radix)
                 )].reverse()
               )
@@ -409,8 +409,8 @@ class Arch extends Algebraic {
         (([x, y], [, z]) => (
           x + '.' + y + '.' + z + 'X'
         ))(
-          ord.toBigNum(precision).split('.'),
-          arg.toBigNum(precision).split('.')
+          ord.toFixed(precision).split('.'),
+          arg.toFixed(precision).split('.')
         )
       ))(this, Arch)
     )
@@ -435,6 +435,14 @@ Reflect.defineProperty(Arch, 'unity', { value: new Arch })
 Reflect.defineProperty(Arch.prototype, 'zero', { value: Arch.zero })
 Reflect.defineProperty(Arch.prototype, 'unity', { value: Arch.unity })
 
+const num2float = (a) => (
+  (({ radix }, [x, y = '']) => (
+    radix || (radix = 10),
+    ((i) => (
+      parseInt(i, radix) / radix ** y.length
+    ))(x + y)
+  ))(Number, a.split('.'))
+)
 const parseArch = (a) => (
   (([x, y, z]) => (
     ((ord, arg) => (
@@ -442,8 +450,8 @@ const parseArch = (a) => (
         a.includes('X') ? _ : _.log
       ))(new Arch(ord, arg))
     ))(
-      parseFloat((x || '0') + '.' + (y || '0')),
-      parseFloat(            '0.' + (z || '0'))
+      num2float((x || '0') + '.' + (y || '0')),
+      num2float(            '0.' + (z || '0'))
     )
   ))(a.split('.'))
 )

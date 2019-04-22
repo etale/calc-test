@@ -24,6 +24,20 @@ Number.parse = function (a) {
   s = BigInt(Number.radix) ** BigInt(ord)
   return new Adele(r, s).finalize
 }
+const num2adele = (a) => (
+  (([x, y = '']) => {
+    let _ = x + y
+    let ord = y.length
+    if (Number.isLittle) {
+      _ = [..._].reverse().join('')
+      ord = x.length - 1
+    }
+    return new Adele(
+      parseBigInt(_, Number.radix),
+      BigInt(Number.radix) ** BigInt(ord)
+    ).finalize
+  })(a.split('.'))
+)
 
 var
 set = function (a) {
@@ -38,7 +52,8 @@ bs = function () {
   e.data.textContent = _ === '' ? '0' : _
 },
 fix = function () {
-  e.value = e.value || Number.parse(e.data.textContent)
+//  e.value = e.value || Number.parse(e.data.textContent)
+  e.value = e.value ||num2adele(e.data.textContent)
 },
 focus = function () {
   e.classList.remove('focus')
