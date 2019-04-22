@@ -201,7 +201,7 @@ class Algebraic {
     defineProperty(prototype, 'asString', {
       get() {
         return (
-          (this < 0 ? '-' : '') +
+          (this < 0 ? '−' : '') +
           (({ body }, { isInteger, isLittle, precision, radix }) => (
             isInteger(body) ? (
               //Integer
@@ -266,7 +266,7 @@ class Algebraic {
       get() {
         return (
           (({ body }) => (
-            (this < 0 ? '-' : '') + (
+            (this < 0 ? '−' : '') + (
               ((_) => (
                 Number.isLittle
                 ? [_[0], '.'].concat(_.slice(1))
