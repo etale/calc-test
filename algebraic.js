@@ -598,6 +598,24 @@ class Adele extends Algebraic {
   }
 }
 const nil = new Adele(0n, 0n, 1n)
+/*
+Number.parse = function (a) {
+  var ord, r, s, _
+
+  a = a.split('.'); a[1] || (a[1] = '')
+  _ = a[0] + a[1]
+  if (Number.isLittle) {
+    ord = a[0].length - 1
+    _ = _.split('').reverse().join('')
+  } else
+  {
+    ord = a[1].length
+  }
+  r = parseBigInt(_, Number.radix)
+  s = BigInt(Number.radix) ** BigInt(ord)
+  return new Adele(r, s).finalize
+}
+*/
 const num2adele = (a) => (
   (([x, y = '']) => {
     let _ = x + y
