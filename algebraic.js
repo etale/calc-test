@@ -178,7 +178,7 @@ class Algebraic {
     defineProperty(prototype, 'asString', {
       get() {
         return (
-          (({ body }, { isLittle, radix }) => (
+          (({ body }, { precision, isLittle, radix }) => (
             (this < 0 ? '-' : '') + (
               ((_) => (
                 isLittle
@@ -187,12 +187,25 @@ class Algebraic {
               ))(
                 [...(
                   radix === 10
-                ? body.toFixed(20)
+                ? body.toFixed(precision)
                 : body.toString(radix)
                 )].reverse()
               )
             ).join('')
           ))(this, Number)
+        )
+      }
+    }),
+    defineProperty(prototype, 'asStringNew', {
+      get() {
+        return (
+          Number.isInteger(this) ? (
+            //Integer
+            ''
+          ) : (
+            //Not Integer
+            ''
+          )
         )
       }
     })
@@ -412,7 +425,7 @@ class Arch extends Algebraic {
           ord.toFixed(precision).split('.'),
           arg.toFixed(precision).split('.')
         )
-      ))(this, Arch)
+      ))(this, Number)
     )
   }
   get asString() {
@@ -424,7 +437,7 @@ class Arch extends Algebraic {
           (z += '0'.repeat(precision)),
           x + '.' + y.slice(0, precision) + '.' + z.slice(0, precision) + 'X'
         ))(ord.asString.split('.'), arg.asString.split('.'))
-      ))(this, Arch)
+      ))(this, Number)
     )
   }
 }
@@ -462,7 +475,7 @@ const parseArch = (a) => (
     )
   ))(a.split('X').join('').split('.'))
 )
-Arch.precision = 8
+Number.precision = 8
 const _Cs  = 9192631770      .log
 const _c   = 299792458       .log
 const _G   = 6.67408e-11     .log

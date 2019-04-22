@@ -18,7 +18,7 @@ const html = {};
   })
 })
 
-Arch.precision = 6
+Number.precision = 6
 
 let e, touch
 //const isFixed = () => (
