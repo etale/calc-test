@@ -25,20 +25,6 @@ Number.parse = function (a) {
   return new Adele(r, s).finalize
 }
 */
-const num2adele = (a) => (
-  (([x, y = '']) => {
-    let _ = x + y
-    let ord = y.length
-    if (Number.isLittle) {
-      _ = [..._].reverse().join('')
-      ord = x.length - 1
-    }
-    return new Adele(
-      parseBigInt(_, Number.radix),
-      BigInt(Number.radix) ** BigInt(ord)
-    ).finalize
-  })(a.split('.'))
-)
 
 var
 set = function (a) {

@@ -598,6 +598,20 @@ class Adele extends Algebraic {
   }
 }
 const nil = new Adele(0n, 0n, 1n)
+const num2adele = (a) => (
+  (([x, y = '']) => {
+    let _ = x + y
+    let ord = y.length
+    if (Number.isLittle) {
+      _ = [..._].reverse().join('')
+      ord = x.length - 1
+    }
+    return new Adele(
+      parseBigInt(_, Number.radix),
+      BigInt(Number.radix) ** BigInt(ord)
+    ).finalize
+  })(a.split('.'))
+)
 
 class BigNum extends Algebraic {
   constructor(r = 0n, precision = 0, radix = 10) {
