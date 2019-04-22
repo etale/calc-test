@@ -419,11 +419,9 @@ class Arch extends Algebraic {
     return (
       (({ isZero, ord, arg }, { precision }) => (
         isZero ? '0' :
-        (([x, y], [, z]) => (
-          y || (y = ''),
-          z || (z = ''),
-          (y += '00000000'),
-          (z += '00000000'),
+        (([x, y = ''], [, z = '']) => (
+          (y += '0'.repeat(precision)),
+          (z += '0'.repeat(precision)),
           x + '.' + y.slice(0, precision) + '.' + z.slice(0, precision) + 'X'
         ))(ord.asString.split('.'), arg.asString.split('.'))
       ))(this, Arch)
@@ -453,7 +451,7 @@ const parseArch = (a) => (
       num2float((x || '0') + '.' + (y || '0')),
       num2float(            '0.' + (z || '0'))
     )
-  ))(a.split('.'))
+  ))(a.split('X').join('').split('.'))
 )
 Arch.precision = 8
 const _Cs  = 9192631770      .log
