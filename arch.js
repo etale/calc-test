@@ -8,7 +8,7 @@ var calc = function () {
 !function () {
 
 Number.radix || Reflect.set(Number, 'radix', 10)
-
+/*
 Number.parse = (a) => (
   (([x, y = '']) => (
     ((i) => (
@@ -16,7 +16,7 @@ Number.parse = (a) => (
     ))([x, y].join(''))
   ))(a.split('.'))
 )
-
+*/
 const html = {};
 
 ['tr', 'td', 'input', 'div', 'table'].forEach((a) => {
