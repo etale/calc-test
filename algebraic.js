@@ -433,6 +433,15 @@ Reflect.defineProperty(Arch, 'unity', { value: new Arch })
 Reflect.defineProperty(Arch.prototype, 'zero', { value: Arch.zero })
 Reflect.defineProperty(Arch.prototype, 'unity', { value: Arch.unity })
 
+/*
+Number.parse = (a) => (
+  (([x, y = '']) => (
+    ((i) => (
+      parseInt(i, Number.radix) / Number.radix ** y.length
+    ))([x, y].join(''))
+  ))(a.split('.'))
+)
+*/
 const num2float = (a) => (
   (({ radix }, [x, y = '']) => (
     radix || (radix = 10),
