@@ -201,6 +201,7 @@ class Algebraic {
     defineProperty(prototype, 'asString', {
       get() {
         return (
+          (this < 0 ? '-' : '') +
           (({ body }, { isInteger, isLittle, precision, radix }) => (
             isInteger(body) ? (
               //Integer
