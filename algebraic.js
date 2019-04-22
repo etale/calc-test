@@ -175,6 +175,7 @@ class Algebraic {
         )
       }
     }),
+/*
     defineProperty(prototype, 'asString', {
       get() {
         return (
@@ -196,16 +197,33 @@ class Algebraic {
         )
       }
     }),
-    defineProperty(prototype, 'asStringNew', {
+*/
+    defineProperty(prototype, 'asString', {
       get() {
         return (
-          Number.isInteger(this) ? (
-            //Integer
-            ''
-          ) : (
-            //Not Integer
-            ''
-          )
+          (({ body }, { isInteger, isLittle, precision, radix }) => (
+            isInteger(body) ? (
+              //Integer
+              isLittle
+              ? (
+                (([x, ...y]) => (
+                  [x, '.'].concat(y).join('')
+                ))(
+                  [...body.toString(radix)].reverse()
+                )
+              )
+              : (
+                body.toString(radix)
+              )
+            ) : (
+              //Not Integer
+              radix === 10
+              ? body.toFixed(precision)
+              : (([x, y]) => (
+                x + '.' + y.slice(0, precision)
+              ))((body + radix ** (- precision - 1)).toString(radix).split('.'))
+            )
+          ))(this, Number)
         )
       }
     })
