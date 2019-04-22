@@ -7,7 +7,7 @@ var calc = function () {
 }
 
 !function () {
-
+/*
 Number.parse = function (a) {
   var ord, r, s, _
 
@@ -24,6 +24,7 @@ Number.parse = function (a) {
   s = BigInt(Number.radix) ** BigInt(ord)
   return new Adele(r, s).finalize
 }
+*/
 const num2adele = (a) => (
   (([x, y = '']) => {
     let _ = x + y
@@ -137,7 +138,8 @@ func['.'] = function() {
 func['↑'] = function () {
   var _ = e.value
 
-  _ ? push() : (_ = Number.parse(e.data.textContent))
+//  _ ? push() : (_ = Number.parse(e.data.textContent))
+  _ ? push() : (_ = num2adele(e.data.textContent))
   set(_)
 }
 func['↓'] = function () {
