@@ -1,16 +1,11 @@
 class Algebraic {
-  eql(a) { return this.valueOf() === a }
-  get zero() { return 0 }
-  get unity() { return 1 }
-  get neg() { return this.isZero ? this : -this }
-  get inv() {
-    return (
-      this.isZero ? undefined :
-      1/this
-    )
-  }
-  get unit() { return this < 0 ? -this.unity : this.unity }
-  get body() { return this < 0 ? -this : this.valueOf() }
+  eql(a) { return }
+  get zero() { return }
+  get unity() { return }
+  get neg() { return }
+  get inv() { return }
+  get unit() { return }
+  get body() { return }
   get isZero() { return this.eql(this.zero) }
   get isUnity() { return this.eql(this.unity) }
   get isUnit() { return this.eql(this.unit) }
@@ -119,6 +114,23 @@ class Algebraic {
         })
       ))(Math[p])
     )),
+    defineProperty(prototype, 'eql', {
+      value(a) { return this.valueOf() === a }
+    }),
+    defineProperty(prototype, 'zero', { value: 0 }),
+    defineProperty(prototype, 'unity', { value: 1 }),
+    defineProperty(prototype, 'neg', {
+      get() { return this.isZero ? this : -this }
+    }),
+    defineProperty(prototype, 'inv', {
+      get() { return this.isZero ? undefined : 1/this }
+    }),
+    defineProperty(prototype, 'unit', {
+      get() { return this < 0 ? -1 : 1 }
+    }),
+    defineProperty(prototype, 'body', {
+      get() { return this < 0 ? this.neg : this.valueOf() }
+    }),
     defineProperty(prototype, 'factor', {
       get() {
         return (
@@ -175,29 +187,6 @@ class Algebraic {
         )
       }
     }),
-/*
-    defineProperty(prototype, 'asString', {
-      get() {
-        return (
-          (({ body }, { precision, isLittle, radix }) => (
-            (this < 0 ? '-' : '') + (
-              ((_) => (
-                isLittle
-                ? [_[0], '.'].concat(_.slice(1))
-                : _.reverse()
-              ))(
-                [...(
-                  radix === 10
-                ? body.toFixed(precision)
-                : body.toString(radix)
-                )].reverse()
-              )
-            ).join('')
-          ))(this, Number)
-        )
-      }
-    }),
-*/
     defineProperty(prototype, 'asString', {
       get() {
         return (
@@ -230,8 +219,23 @@ class Algebraic {
     })
   ))(Number),
   (({ prototype }) => (
+    defineProperty(prototype, 'eql', {
+      value(a) { return this.valueOf() === a }
+    }),
     defineProperty(prototype, 'zero', { value: 0n }),
     defineProperty(prototype, 'unity', { value: 1n }),
+    defineProperty(prototype, 'neg', {
+      get() { return -this }
+    }),
+    defineProperty(prototype, 'inv', {
+      get() { return this.isZero ? undefined : new Adele(1n, this) }
+    }),
+    defineProperty(prototype, 'unit', {
+      get() { return this < 0 ? -1n : 1n }
+    }),
+    defineProperty(prototype, 'body', {
+      get() { return this < 0 ? this.neg : this.valueOf() }
+    }),
     defineProperty(prototype, 'factor', {
       get() {
         return (
@@ -639,24 +643,6 @@ class Adele extends Algebraic {
   }
 }
 const nil = new Adele(0n, 0n, 1n)
-/*
-Number.parse = function (a) {
-  var ord, r, s, _
-
-  a = a.split('.'); a[1] || (a[1] = '')
-  _ = a[0] + a[1]
-  if (Number.isLittle) {
-    ord = a[0].length - 1
-    _ = _.split('').reverse().join('')
-  } else
-  {
-    ord = a[1].length
-  }
-  r = parseBigInt(_, Number.radix)
-  s = BigInt(Number.radix) ** BigInt(ord)
-  return new Adele(r, s).finalize
-}
-*/
 const num2adele = (a) => (
   (([x, y = '']) => {
     let _ = x + y
