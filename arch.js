@@ -1,4 +1,4 @@
-var calc = function () {
+const calc = function () {
   Number.radix = parseInt(location.hash.slice(1)) || 10
   calc.refresh()
   document.body === calc.display.parentNode || document.body.appendChild(calc.display)
@@ -116,6 +116,8 @@ const set = (a) => {
   e.value = a; e.data.textContent = a.asString
 }
 const numeric = function() {
+  if (parseInt(this.textContent, 36) >= Number.radix)
+    return
   e.value && push()
   e.data.textContent = (e.data.textContent === '0' ? '' : e.data.textContent) + this.textContent
 }
