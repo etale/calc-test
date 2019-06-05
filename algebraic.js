@@ -120,7 +120,7 @@ class Algebraic {
     defineProperty(prototype, 'zero', { value: 0 }),
     defineProperty(prototype, 'unity', { value: 1 }),
     defineProperty(prototype, 'neg', {
-      get() { return this.isZero ? this : -this }
+      get() { return this.isZero ? 0 : -this }
     }),
     defineProperty(prototype, 'inv', {
       get() { return this.isZero ? undefined : 1/this }
@@ -501,23 +501,24 @@ const parseArch = (a) => (
 Number.precision = 8
 const _Cs  = 9192631770      .log
 const _c   = 299792458       .log
-const _G   = 6.67408e-11     .log
+const _G   = 6.67430e-11     .log
 const _h   = 6.62607015e-34  .log
 const _k   = 1.380649e-23    .log
 const _e   = 1.602176634e-19 .log
 const _NA  = 6.02214076e23   .log
 const _Kcd = 683             .log
-const b  = 2    .log
-const pi2 = PI2 .log
-const μ0 = b + pi2 - 7 * 10 .log
+const _2   = 2               .log
+const _PI2 = PI2             .log
+const _10  = 10              .log
+const _μ0  = _2 + _PI2 - 7 * _10
 
-const kg = new Arch((-  _c + _G - _h + b) / 2 + pi2     , 0.125)
-const m  = new Arch(( 3*_c - _G - _h - b) / 2           , 0.125)
-const s  = new Arch(( 5*_c - _G - _h - b) / 2           , 0.125)
-const K  = new Arch((-5*_c + _G - _h + b) / 2 + pi2 + _k, 0.125)
-const C  = new Arch((   _c      - _h + b - 7 * 10 .log
-                                        ) / 2 + pi2     , 0.125)
-const B  = new Arch((3*b + b.log))
+const kg = new Arch((-  _c + _G - _h + _2) / 2 + _PI2     , 0.125)
+const m  = new Arch(( 3*_c - _G - _h - _2) / 2            , 0.125)
+const s  = new Arch(( 5*_c - _G - _h - _2) / 2            , 0.125)
+const K  = new Arch((-5*_c + _G - _h + _2) / 2 + _PI2 + _k, 0.125)
+const C  = new Arch((   _c      - _h + _2 - 7 * _10
+                                        ) / 2 + _PI2      , 0.125)
+const B  = new Arch((3*_2 + _2.log))
 const mol = new Arch(_NA)
 const cd = new Arch(- _Kcd).mul(kg).mul(m.pow(2)).mul(s.pow(-3))
 const e = new Arch(_e).mul(C)
