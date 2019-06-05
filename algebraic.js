@@ -41,12 +41,12 @@ class Algebraic {
   }
   gcd(a) {
     return (
-      ((_) => {
+      (({ body }) => {
         while (!a.isZero) {
-          [_, a] = [a, _.mod(a)]
+          [body, a] = [a, body.mod(a)]
         }
-        return _
-      })(this.valueOf())
+        return body
+      })(this)
     )
   }
   ub(a) {
@@ -80,6 +80,18 @@ class Algebraic {
         }
         return x.mod(n)
       })(this.valueOf(), this.unity, this.zero, a)
+    )
+  }
+  __inv(a) {
+    return (
+      (({ body, unity, zero }) => {
+        while (!a.isZero) {
+          (([q, r]) => {
+            [body, a, unity, zero] = [a, r, zero, unity - q * zero]
+          })(body.divmod(a))
+        }
+        return unity
+      })(this)
     )
   }
   get factorize() {
