@@ -159,19 +159,19 @@ const keys = {
       _.textContent === '' && (_.textContent = '0')
     }
   },
-  'kg': function() {
+  kg() {
     fix(); e.value.isZero || push(); set(kg)
   },
-  'm': function() {
+  m() {
     fix(); e.value.isZero || push(); set(m)
   },
-  's': function() {
+  s() {
     fix(); e.value.isZero || push(); set(s)
   },
-  'exp': function() {
+  exp() {
     fixAsIs()
   },
-  'log': function() {
+  log() {
     e.value || set(parseArch(e.data.textContent)); e.value.isZero || set(e.value.log)
   },
   '/': function() {
