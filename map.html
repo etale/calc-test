@@ -36,9 +36,8 @@ div {
 </style>
 <script src="algebraic.js"></script>
 <script>
-var delta
-, _ = (a, b) => new Arch(a.log, b)
-, prefix = {}, unit = {}
+let delta
+const _ = (a, b) => new Arch(a.log, b)
 , tau = _(PI2, 0.25)
 , one = _(1)
 , two = _(2)
@@ -59,42 +58,32 @@ var delta
 , EiB = Ei.mul(B)
 , ZiB = Zi.mul(B)
 , YiB = Yi.mul(B)
-prefix[''] = new Arch
-prefix.k = _(1000)
-prefix.M = prefix.k.mul(prefix.k)
-prefix.G = prefix.M.mul(prefix.k)
-prefix.T = prefix.G.mul(prefix.k)
-//prefix.P = prefix.T.mul(prefix.k)
-//prefix.E = prefix.P.mul(prefix.k)
-//prefix.Z = prefix.E.mul(prefix.k)
-//prefix.Y = prefix.Z.mul(prefix.k)
-prefix.m = prefix.k.inv
-prefix.μ = prefix.m.mul(prefix.m)
-prefix.n = prefix.μ.mul(prefix.m)
-prefix.p = prefix.n.mul(prefix.m)
-//prefix.f = prefix.p.mul(prefix.m)
-//prefix.a = prefix.f.mul(prefix.m)
-//prefix.z = prefix.a.mul(prefix.m)
-//prefix.y = prefix.z.mul(prefix.m)
-unit.m = m
-unit.s = s
-unit.g = prefix.m.mul(kg)
-unit.Hz = s.inv
-unit.N  = kg.mul(m).mul(s.pow(-2))
-unit.J  = unit.N.mul(m)
-unit.A  = C.mul(s.inv)
-unit.K  = K
-unit.C  = C
-unit.W  = unit.J.mul(unit.Hz)
-unit.V  = unit.W.mul(unit.A.inv)
-unit.Ω  = unit.V.mul(unit.A.inv)
-unit.Pa = unit.N.mul(m.pow(-2))
-// unit.F  = unit.C.mul(unit.V.inv)
-// unit.S  = unit.A.mul(unit.V.inv)
-// unit.Wb = unit.V.mul(unit.s)
-// unit.T  = unit.Wb.mul(unit.m.mul(unit.m).inv)
-// unit.H  = unit.Wb.mul(unit.A.inv)
-var atm = _(101325).mul(unit.Pa)
+const prefix = {
+  '': Arch.unity,
+  k: _(1e3), M: _(1e6), G: _(1e9), T: _(1e12),
+//  P: _(1e15), E: _(1e18), Z: _(1e21), Y: _(1e24),
+  m: _(1e-3), μ: _(1e-6), n: _(1e-9), p: _(1e-12),
+//  f: _(1e-15), a: _(1e-18), z: _(1e-21), y: _(1e-24)
+}
+const unit = {
+  m, s,
+  g: _(1e-3).mul(kg),
+  Hz: s.inv,
+  N: kg.mul(m).mul(s.pow(-2)),
+  J: kg.mul(m.pow(2)).mul(s.pow(-2)),
+  A: C.mul(s.inv),
+  K, C,
+  W: kg.mul(m.pow(2)).mul(s.pow(-3)),
+  V: kg.mul(m.pow(2)).mul(s.pow(-2)).mul(C.inv),
+  Ω: kg.mul(m.pow(2)).mul(s.pow(-1)).mul(C.pow(-2)),
+  Pa: kg.mul(m.inv).mul(s.pow(-2)),
+//  F: kg.inv.mul(m.pow(-2)).mul(s.pow(2)).mul(C.pow(2)),
+//  S: kg.inv.mul(m.pow(-2)).mul(s.pow(1)).mul(C.pow(2)),
+//  Wb: kg.mul(m.pow(2)).mul(s.pow(-1)).mul(C.inv),
+//  T: kg.mul(s.pow(-1)).mul(C.inv),
+//  H: kg.mul(m.pow(2)).mul(C.pow(-2)),
+}
+const atm = _(101325).mul(unit.Pa)
 , km = prefix.k.mul(unit.m)
 , min = _(60).mul(unit.s), hour = _(60).mul(min), day = _(24).mul(hour)
 , week = _(7).mul(day), year = _(365.25).mul(day)
