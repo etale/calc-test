@@ -416,9 +416,8 @@ class Arch extends Algebraic {
         isUnity ? zero :
         new Arch(
           ((ord, amp) => (
-            ord.isZero ? (
-              amp.log
-            ) : (
+            ord.isZero ? amp.log :
+            amp.isZero ? ord.log : (
               ord.log + (
                 ord < Number.EPSILON ? (
                   (amp/ord).log
