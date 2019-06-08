@@ -206,17 +206,17 @@ class Algebraic {
           (({ body }, { isInteger, isLittle, precision, radix }) => (
             isInteger(body) ? (
               //Integer
-              isLittle
-              ? (
-                (([x, ...y]) => (
-                  [x, '.'].concat(y).join('')
-                ))(
-                  [...body.toString(radix)].reverse()
+              ((string)=>(
+                isLittle ? (
+                  (([x, ...y]) => (
+                    [x, '.'].concat(y).join('')
+                  ))(
+                    [...string].reverse()
+                  )
+                ) : (
+                  string
                 )
-              )
-              : (
-                body.toString(radix)
-              )
+              ))(BigInt(body).toString(radix))
             ) : (
               //Not Integer
               radix === 10

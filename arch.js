@@ -110,11 +110,6 @@ const pop = () => (
     value
   ))(e)
 )
-/*
-const set = (a) => {
-  e.value = a; e.data.textContent = a.toString()
-}
-*/
 const set = (a) => {
   e.value = a; e.data.textContent = a.asString
 }
