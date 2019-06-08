@@ -28,7 +28,10 @@ const fix = () => {
   e.value || set(parseArch(e.data.textContent))
 }
 const fixAsIs = () => {
-  set(e.value ? e.value.exp : parseArch(e.data.textContent + 'X'))
+  set(
+    e.value ? (
+      e.value.ord.exp === Infinity ? e.value : e.value.exp
+    ) : parseArch(e.data.textContent + 'X'))
 }
 const moveFocus = function() {
   e.classList.remove('focus')
