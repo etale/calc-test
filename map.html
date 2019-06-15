@@ -96,7 +96,12 @@ const atm = _(101325).mul(unit.Pa)
     return [prefix[p].mul(unit[u]), p + u]
   }))
 }, []).concat([
-  [eV, 'eV'], [atm, 'atm']
+  [eV, 'eV']
+, [prefix.k.mul(eV), 'keV']
+, [prefix.M.mul(eV), 'MeV']
+, [prefix.G.mul(eV), 'GeV']
+, [prefix.T.mul(eV), 'TeV']
+, [atm, 'atm']
 , [min, 'min'], [hour, 'hour'], [day, 'day'], [week, 'week'], [year, 'year']
 , [prefix.k.mul(year), 'Thousand years']
 , [prefix.M.mul(year), 'Million years']
