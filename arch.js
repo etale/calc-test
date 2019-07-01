@@ -30,6 +30,7 @@ const fix = () => {
 const fixAsIs = () => {
   set(
     e.value ? (
+      e.value.isZero ? e.value.exp :
       e.value.ord.exp === Infinity ? e.value : e.value.exp
     ) : parseArch(e.data.textContent + 'X'))
 }
