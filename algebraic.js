@@ -415,16 +415,10 @@ class Arch extends Algebraic {
         isZero ? undefined :
         isUnity ? zero :
         new Arch(
-          ((ord, amp) => (
-            ord.isZero ? amp.log :
-            amp.isZero ? ord.log :
-            ord.log + (
-              ord < Number.EPSILON ? (
-                (amp/ord).log
-              ) : (
-                (1 + (amp/ord)**2).log * 0.5
-              )
-            )
+          ((x, y) => (
+            x < y && ([x, y] = [y, x]),
+            y /= x,
+            x.log + (1 + y**2).log / 2
           ))(ord.body, amp.body),
           amp.atan2(ord) / PI2
         )
