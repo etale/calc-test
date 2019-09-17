@@ -346,8 +346,7 @@ class Arch extends Algebraic {
   get unit() {
     return (
       (({ isZero, unity, arg }) => (
-        isZero ? unity :
-        new Arch(0, arg)
+        isZero ? unity : new Arch(0, arg)
       ))(this)
     )
   }
