@@ -144,10 +144,10 @@ class Algebraic {
       get() { return this < 0 ? this.neg : this.valueOf() }
     }),
     defineProperty(prototype, 'ord', {
-      get() { return this === 0 ? undefined : this.body.log }
+      get() { return this.isZero ? undefined : this.body.log }
     }),
     defineProperty(prototype, 'arg', {
-      get() { return this === 0 ? undefined : this > 0 ? 0 : 0.5 }
+      get() { return this.isZero ? undefined : this > 0 ? 0 : 0.5 }
     }),
     defineProperty(prototype, 'factor', {
       get() {
