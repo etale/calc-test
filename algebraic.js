@@ -143,6 +143,12 @@ class Algebraic {
     defineProperty(prototype, 'body', {
       get() { return this < 0 ? this.neg : this.valueOf() }
     }),
+    defineProperty(prototype, 'ord', {
+      get() { return this === 0 ? undefined : this.body.log }
+    }),
+    defineProperty(prototype, 'arg', {
+      get() { return this === 0 ? undefined : this > 0 ? 0 : 0.5 }
+    }),
     defineProperty(prototype, 'factor', {
       get() {
         return (
@@ -176,9 +182,8 @@ class Algebraic {
     defineProperty(prototype, 'toArch', {
       get() {
         return (
-          this > 0 ? new Arch(this.log) :
-          this < 0 ? new Arch(this.neg.log, 0.5) :
-          Arch.zero
+          this === 0 ? Arch.zero :
+          new Arch(this.ord, this.arg)
         )
       }
     }),
