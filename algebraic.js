@@ -535,15 +535,23 @@ const _PI2 = PI2             .log
 const _10  = 10              .log
 const _μ0  = _2 + _PI2 - 7 * _10
 
-const kg = new Arch((-  _c + _G - _h + _2) / 2 + _PI2     , 0.125)
-const m  = new Arch(( 3*_c - _G - _h - _2) / 2            , 0.125)
-const s  = new Arch(( 5*_c - _G - _h - _2) / 2            , 0.125)
-const K  = new Arch((-5*_c + _G - _h + _2) / 2 + _PI2 + _k, 0.125)
-const C  = new Arch((   _c      - _h + _2 - 7 * _10
-                                        ) / 2 + _PI2      , 0.125)
-const B  = new Arch((3*_2 + _2.log))
+const _kg = (-  _c + _G - _h + _2) / 2 + _PI2
+const _m  = ( 3*_c - _G - _h - _2) / 2
+const _s  = ( 5*_c - _G - _h - _2) / 2
+const _K  = (-5*_c + _G - _h + _2) / 2 + _PI2 + _k
+const _C  = (   _c      - _h + _2 - 7 * _10) / 2 + _PI2
+const _B  = (3*_2 + _2.log)
+const _cd = - _Kcd + _kg + 2 * _m - 3 * _s
+
+const kg = new Arch(_kg, 0.125)
+const m  = new Arch(_m, 0.125)
+const s  = new Arch(_s, 0.125)
+const K  = new Arch(_K, 0.125)
+const C  = new Arch(_C, 0.125)
+const B  = new Arch(_B)
 const mol = new Arch(_NA)
 const cd = new Arch(- _Kcd).mul(kg).mul(m.pow(2)).mul(s.pow(-3))
+const cdx = new Arch(_cd)
 const e = new Arch(_e).mul(C)
 
 class Adele extends Algebraic {
@@ -793,4 +801,4 @@ class BigNum extends Algebraic {
     )
   }
 }
-(typeof module === 'undefined' ? {} : module).exports = { Arch, Adele }
+//(typeof module === 'undefined' ? {} : module).exports = { Arch, Adele }
