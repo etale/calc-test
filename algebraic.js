@@ -530,28 +530,28 @@ const _k   = 1.380649e-23    .log
 const _e   = 1.602176634e-19 .log
 const _NA  = 6.02214076e23   .log
 const _Kcd = 683             .log
+const _α   = 7.2973525693e-3 .log
 const _2   = 2               .log
 const _PI2 = PI2             .log
 const _10  = 10              .log
-const _α = 7.2973525693e-3.log
+const _B   = 256 .log.log
 
-const _kg = (  -_c +_G -_h +_2) / 2 +_PI2
-const _m  = ( 3*_c -_G -_h -_2) / 2
-const _s  = ( 5*_c -_G -_h -_2) / 2
-const _K  = (-5*_c +_G -_h +_2) / 2 +_PI2 +_k
-const _C  = (-2*_e +_α     +_2 +_PI2) / 2
-const _B  =               3*_2 +_2.log
-const _cd = - _Kcd +_kg +2*_m -3*_s
+const _kg = (  -_c +_G -_h +_2)/2 +_PI2
+const _m  = ( 3*_c -_G -_h -_2)/2
+const _s  = ( 5*_c -_G -_h -_2)/2
+const _K  = (-5*_c +_G -_h +_2)/2 +_PI2 +_k
+const _cd =  -5*_c +_G     +_2    +_PI2 -_Kcd
+const _C  =    -_e + (_α   +_2    +_PI2)/2
 
-const kg = new Arch(_kg, 0.125)
-const m  = new Arch(_m, 0.125)
-const s  = new Arch(_s, 0.125)
-const K  = new Arch(_K, 0.125)
-const C  = new Arch(_C, 0.125)
+const kg = new Arch(_kg, 1/8)
+const m  = new Arch(_m, 1/8)
+const s  = new Arch(_s, 1/8)
+const K  = new Arch(_K, 1/8)
+const C  = new Arch(_C, 1/8)
 const B  = new Arch(_B)
 const mol = new Arch(_NA)
 const cd = new Arch(_cd)
-const e = new Arch(_e).mul(C)
+const e = new Arch(_e +_C, 1/8)
 
 class Adele extends Algebraic {
   constructor(r = 0n, s = 1n, n = 0n) {
