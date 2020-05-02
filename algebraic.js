@@ -67,7 +67,7 @@ class Algebraic {
       })(this)
     )
   }
-  lcm(a) {　return this * a / this.gcd(a)　}
+  lcm(a) { return this * a / this.gcd(a) }
   _inv(a) {
     return (
       ((_, x, z, n) => {
@@ -522,36 +522,42 @@ const parseArch = (a) => (
   ))(a.split('X').join('').split('.'))
 )
 Number.precision = 8
-const _Cs  = 9192631770      .log
-const _c   = 299792458       .log
-const _G   = 6.67430e-11     .log
-const _h   = 6.62607015e-34  .log
-const _k   = 1.380649e-23    .log
-const _e   = 1.602176634e-19 .log
-const _NA  = 6.02214076e23   .log
-const _Kcd = 683             .log
-const _α   = 7.2973525693e-3 .log
-const _2   = 2               .log
-const _PI2 = PI2             .log
-const _10  = 10              .log
-const _B   = 256 .log.log
+Number.constants = {
+  _Cs  : 9192631770      .log,
+  _c   : 299792458       .log,
+  _G   : 6.67430e-11     .log,
+  _h   : 6.62607015e-34  .log,
+  _k   : 1.380649e-23    .log,
+  _e   : 1.602176634e-19 .log,
+  _NA  : 6.02214076e23   .log,
+  _Kcd : 683             .log,
+  _alpha : 7.2973525693e-3 .log,
+  _2   : 2               .log,
+  _PI2 : PI2             .log,
+  _10  : 10              .log,
+  _B   : 256 .log.log
+}
 
-const _kg = (  -_c +_G -_h +_2)/2 +_PI2
-const _m  = ( 3*_c -_G -_h -_2)/2
-const _s  = ( 5*_c -_G -_h -_2)/2
-const _K  = (-5*_c +_G -_h +_2)/2 +_PI2 +_k
-const _cd =  -5*_c +_G     +_2    +_PI2 -_Kcd
-const _C  =    -_e + (_α   +_2    +_PI2)/2
+Number.units = (({ _c, _G, _h, _k, _Kcd, _e, _alpha, _2, _PI2, }) => ({
+  _kg: (  -_c +_G -_h +_2)/2 +_PI2,
+  _m : ( 3*_c -_G -_h -_2)/2,
+  _s : ( 5*_c -_G -_h -_2)/2,
+  _K : (-5*_c +_G -_h +_2)/2 +_PI2 +_k,
+  _cd:  -5*_c +_G     +_2    +_PI2 -_Kcd,
+  _C :    -_e + (_alpha   +_2    +_PI2)/2
+}))(Number.constants)
 
-const kg = new Arch(_kg, 1/8)
-const m  = new Arch(_m, 1/8)
-const s  = new Arch(_s, 1/8)
-const K  = new Arch(_K, 1/8)
-const C  = new Arch(_C, 1/8)
-const B  = new Arch(_B)
-const mol = new Arch(_NA)
-const cd = new Arch(_cd)
-const e = new Arch(_e +_C, 1/8)
+Arch.units = (({ _kg, _m, _s, _K, _C, _B, _cd }, { _NA, _e }) => ({
+  kg : new Arch(_kg, 1/8),
+  m  : new Arch(_m, 1/8),
+  s  : new Arch(_s, 1/8),
+  K  : new Arch(_K, 1/8),
+  C  : new Arch(_C, 1/8),
+  B  : new Arch(_B),
+  mol: new Arch(_NA),
+  cd : new Arch(_cd),
+  e  : new Arch(_e +_C, 1/8)
+}))(Number.units, Number.constants)
 
 class Adele extends Algebraic {
   constructor(r = 0n, s = 1n, n = 0n) {
