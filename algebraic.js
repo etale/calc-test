@@ -547,6 +547,22 @@ Number.units = (({ _c, _G, _h, _k, _Kcd, _e, _alpha, _2, _PI2, }) => ({
   _C :    -_e + (_alpha   +_2    +_PI2)/2
 }))(Number.constants)
 
+Object.assign(Number.units, (({ _kg, _m, _s, _K, _cd, _C }) => ({
+  _Hz:            -  _s,
+  _N :  _kg +  _m -2*_s,
+  _J :  _kg +2*_m -2*_s,
+  _W :  _kg +2*_m -3*_s,
+  _Pa:  _kg -  _m -2*_s,
+  _A :            -  _s +  _C,
+  _V :  _kg +2*_m -2*_s -  _C,
+  _Omega :  _kg +2*_m -  _s -2*_C,
+  _F : -_kg -2*_m +2*_s +2*_C,
+  _S : -_kg -2*_m +  _s +2*_C,
+  _Wb:  _kg +2*_m -  _s -  _C,
+  _T :  _kg       -  _s -  _C,
+  _H :  _kg +2*_m       -2*_C
+}))(Number.units))
+
 Arch.units = (({ _kg, _m, _s, _K, _C, _B, _cd }, { _NA, _e }) => ({
   kg : new Arch(_kg, 1/8),
   m  : new Arch(_m, 1/8),
