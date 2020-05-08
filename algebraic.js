@@ -555,7 +555,7 @@ Object.assign(Number.units, (({ _kg, _m, _s, _K, _cd, _C }) => ({
   _Pa:  _kg -  _m -2*_s,
   _A :            -  _s +  _C,
   _V :  _kg +2*_m -2*_s -  _C,
-  _Omega :  _kg +2*_m -  _s -2*_C,
+  _Ω :  _kg +2*_m -  _s -2*_C,
   _F : -_kg -2*_m +2*_s +2*_C,
   _S : -_kg -2*_m +  _s +2*_C,
   _Wb:  _kg +2*_m -  _s -  _C,
