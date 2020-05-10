@@ -531,20 +531,20 @@ Number.constants = {
   _e   : 1.602176634e-19 .log,
   _NA  : 6.02214076e23   .log,
   _Kcd : 683             .log,
-  _alpha : 7.2973525693e-3 .log,
+  _α   : 7.2973525693e-3 .log,
   _2   : 2               .log,
   _PI2 : PI2             .log,
   _10  : 10              .log,
   _B   : 256 .log.log
 }
 
-Number.units = (({ _c, _G, _h, _k, _Kcd, _e, _alpha, _2, _PI2, }) => ({
+Number.units = (({ _c, _G, _h, _k, _Kcd, _e, _α, _2, _PI2, }) => ({
   _kg: (  -_c +_G -_h +_2)/2 +_PI2,
   _m : ( 3*_c -_G -_h -_2)/2,
   _s : ( 5*_c -_G -_h -_2)/2,
   _K : (-5*_c +_G -_h +_2)/2 +_PI2 +_k,
   _cd:  -5*_c +_G     +_2    +_PI2 -_Kcd,
-  _C :    -_e + (_alpha   +_2    +_PI2)/2
+  _C :    -_e + (_α   +_2    +_PI2)/2
 }))(Number.constants)
 
 Object.assign(Number.units, (({ _kg, _m, _s, _K, _cd, _C }) => ({
