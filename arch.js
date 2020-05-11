@@ -120,6 +120,7 @@ const numeric = function() {
   e.value && push()
   e.data.textContent = (e.data.textContent === '0' ? '' : e.data.textContent) + this.textContent
 }
+const { kg, m, s } = Arch.units
 const keys = {
   '0': numeric,
   '1': numeric,
