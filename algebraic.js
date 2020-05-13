@@ -535,7 +535,7 @@ Number.constants = {
   _2   : 2               .log,
   _PI2 : PI2             .log,
   _10  : 10              .log,
-  _B   : 256 .log.log
+  _B   : 256         .log.log
 }
 
 Number.units = (({ _c, _G, _h, _k, _Kcd, _e, _α, _2, _PI2, }) => ({
@@ -564,10 +564,10 @@ Object.assign(Number.units, (({ _kg, _m, _s, _K, _cd, _C }) => ({
 }))(Number.units))
 
 Arch.units = (({
-  _kg, _m, _s, _K, _C, _B, _cd,
+  _kg, _m, _s, _K, _C, _cd,
   _Hz, _N, _J, _W, _Pa, _A, _V, _Ω, _F, _S, _Wb, _T, _H
 }, {
-  _NA, _e
+  _NA, _e, _B
 }) => ({
   kg : new Arch(_kg, 1/8),
   m  : new Arch(_m, 1/8),
