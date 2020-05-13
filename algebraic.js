@@ -563,7 +563,12 @@ Object.assign(Number.units, (({ _kg, _m, _s, _K, _cd, _C }) => ({
   _H :  _kg +2*_m       -2*_C
 }))(Number.units))
 
-Arch.units = (({ _kg, _m, _s, _K, _C, _B, _cd }, { _NA, _e }) => ({
+Arch.units = (({
+  _kg, _m, _s, _K, _C, _B, _cd,
+  _Hz, _N, _J, _W, _Pa, _A, _V, _Ω, _F, _S, _Wb, _T, _H
+}, {
+  _NA, _e
+}) => ({
   kg : new Arch(_kg, 1/8),
   m  : new Arch(_m, 1/8),
   s  : new Arch(_s, 1/8),
@@ -572,7 +577,20 @@ Arch.units = (({ _kg, _m, _s, _K, _C, _B, _cd }, { _NA, _e }) => ({
   B  : new Arch(_B),
   mol: new Arch(_NA),
   cd : new Arch(_cd),
-  e  : new Arch(_e +_C, 1/8)
+  e  : new Arch(_e +_C, 1/8),
+  Hz : new Arch(_Hz, -1/8),
+  N  : new Arch(_N),
+  J  : new Arch(_J, 1/8),
+  W  : new Arch(_W),
+  Pa : new Arch(_Pa, -1/4),
+  A  : new Arch(_A),
+  V  : new Arch(_V),
+  Ω  : new Arch(_Ω),
+  F  : new Arch(_F, 1/8),
+  S  : new Arch(_S),
+  Wb : new Arch(_Wb, 1/8),
+  T  : new Arch(_T, -1/8),
+  H  : new Arch(_H, 1/8)
 }))(Number.units, Number.constants)
 
 class Adele extends Algebraic {
