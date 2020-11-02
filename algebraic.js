@@ -840,4 +840,4 @@ class BigNum extends Algebraic {
     )
   }
 }
-(typeof module === 'undefined' ? {} : module).exports = { Arch, Adele }
+;(typeof module === 'undefined' ? {} : module).exports = { Arch, Adele }
