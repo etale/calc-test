@@ -126,114 +126,118 @@ class Algebraic {
         })
       ))(Math[p])
     )),
-    defineProperty(prototype, 'eql', {
-      value(a) { return this.valueOf() === a }
-    }),
-    defineProperty(prototype, 'zero', { value: 0 }),
-    defineProperty(prototype, 'unity', { value: 1 }),
-    defineProperty(prototype, 'neg', {
-      get() { return this.isZero ? 0 : -this }
-    }),
-    defineProperty(prototype, 'inv', {
-      get() { return this.isZero ? undefined : 1/this }
-    }),
-    defineProperty(prototype, 'unit', {
-      get() { return this < 0 ? -1 : 1 }
-    }),
-    defineProperty(prototype, 'body', {
-      get() { return this < 0 ? this.neg : this.valueOf() }
-    }),
-    defineProperty(prototype, 'ord', {
-      get() { return this.isZero ? undefined : this.body.log }
-    }),
-    defineProperty(prototype, 'arg', {
-      get() { return this.isZero ? undefined : this > 0 ? 0 : 0.5 }
-    }),
-    defineProperty(prototype, 'factor', {
-      get() {
-        return (
-          !(this % 2) ? 2 :
-          !(this % 3) ? 3 :
-          !(this % 5) ? 5 :
-          ((_, p) => {
-            while (p * p <= _) {
-              if (!(_ % p)) return p // 7
-              p += 4
-              if (!(_ % p)) return p // 11
-              p += 2
-              if (!(_ % p)) return p // 13
-              p += 4
-              if (!(_ % p)) return p // 17
-              p += 2
-              if (!(_ % p)) return p // 19
-              p += 4
-              if (!(_ % p)) return p // 23
-              p += 6
-              if (!(_ % p)) return p // 29
-              p += 2
-              if (!(_ % p)) return p // 1
-              p += 6
-            }
-            return _
-          })(this.valueOf(), 7)
-        )
-      }
-    }),
-    defineProperty(prototype, 'toArch', {
-      get() {
-        return (
-          this === 0 ? Arch.zero :
-          new Arch(this.ord, this.arg)
-        )
-      }
-    }),
-    defineProperty(prototype, 'ub2', {
-      get() {
-        return (
-          (({ body, unit }, i) => {
-            while (body > 2) {
-              body /= 2
-              i += 1
-            }
-            while (body < 1) {
-              body *= 2
-              i -= 1
-            }
-            return [unit * body * 2 ** 52, 2 ** (i - 52)]
-          })(this, 0)
-        )
-      }
-    }),
-    defineProperty(prototype, 'asString', {
-      get() {
-        return (
-          (this < 0 ? '−' : '') +
-          (({ body }, { isInteger, isLittle, precision, radix }) => (
-            isInteger(body) ? (
-              //Integer
-              ((string)=>(
-                isLittle ? (
-                  (([x, ...y]) => (
-                    [x, '.'].concat(y).join('')
-                  ))(
-                    [...string].reverse()
+    Object.entries({
+      eql: {
+        value(a) { return this.valueOf() === a }
+      },
+      zero: { value: 0 },
+      unity: { value: 1 },
+      neg: {
+        get() { return this.isZero ? 0 : -this }
+      },
+      inv: {
+        get() { return this.isZero ? undefined : 1/this }
+      },
+      unit: {
+        get() { return this < 0 ? -1 : 1 }
+      },
+      body: {
+        get() { return this < 0 ? this.neg : this.valueOf() }
+      },
+      ord: {
+        get() { return this.isZero ? undefined : this.body.log }
+      },
+      arg: {
+        get() { return this.isZero ? undefined : this > 0 ? 0 : 0.5 }
+      },
+      factor: {
+        get() {
+          return (
+            !(this % 2) ? 2 :
+            !(this % 3) ? 3 :
+            !(this % 5) ? 5 :
+            ((_, p) => {
+              while (p * p <= _) {
+                if (!(_ % p)) return p // 7
+                p += 4
+                if (!(_ % p)) return p // 11
+                p += 2
+                if (!(_ % p)) return p // 13
+                p += 4
+                if (!(_ % p)) return p // 17
+                p += 2
+                if (!(_ % p)) return p // 19
+                p += 4
+                if (!(_ % p)) return p // 23
+                p += 6
+                if (!(_ % p)) return p // 29
+                p += 2
+                if (!(_ % p)) return p // 1
+                p += 6
+              }
+              return _
+            })(this.valueOf(), 7)
+          )
+        }
+      },
+      toArch: {
+        get() {
+          return (
+            this === 0 ? Arch.zero :
+            new Arch(this.ord, this.arg)
+          )
+        }
+      },
+      ub2: {
+        get() {
+          return (
+            (({ body, unit }, i) => {
+              while (body > 2) {
+                body /= 2
+                i += 1
+              }
+              while (body < 1) {
+                body *= 2
+                i -= 1
+              }
+              return [unit * body * 2 ** 52, 2 ** (i - 52)]
+            })(this, 0)
+          )
+        }
+      },
+      asString: {
+        get() {
+          return (
+            (this < 0 ? '−' : '') +
+            (({ body }, { isInteger, isLittle, precision, radix }) => (
+              isInteger(body) ? (
+                //Integer
+                ((string)=>(
+                  isLittle ? (
+                    (([x, ...y]) => (
+                      [x, '.'].concat(y).join('')
+                    ))(
+                      [...string].reverse()
+                    )
+                  ) : (
+                    string
                   )
-                ) : (
-                  string
-                )
-              ))(BigInt(body).toString(radix))
-            ) : (
-              //Not Integer
-              radix === 10
-              ? body.toFixed(precision)
-              : (([x, y]) => (
-                x + '.' + y.slice(0, precision)
-              ))((body + radix ** (- precision - 1)).toString(radix).split('.'))
-            )
-          ))(this, Number)
-        )
+                ))(BigInt(body).toString(radix))
+              ) : (
+                //Not Integer
+                radix === 10
+                ? body.toFixed(precision)
+                : (([x, y]) => (
+                  x + '.' + y.slice(0, precision)
+                ))((body + radix ** (- precision - 1)).toString(radix).split('.'))
+              )
+            ))(this, Number)
+          )
+        }
       }
-    })
+    }).forEach(([k, v]) => (
+      defineProperty(prototype, k, v)
+    ))
   ))(Number),
   (({ prototype }) => (
     defineProperty(prototype, 'eql', {
