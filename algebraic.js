@@ -126,7 +126,7 @@ class Algebraic {
         })
       ))(Math[p])
     )),
-    Object.entries({
+    Object.defineProperties(prototype, {
       eql: {
         value(a) { return this.valueOf() === a }
       },
@@ -235,73 +235,73 @@ class Algebraic {
           )
         }
       }
-    }).forEach(([k, v]) => (
-      defineProperty(prototype, k, v)
-    ))
+    })
   ))(Number),
   (({ prototype }) => (
-    defineProperty(prototype, 'eql', {
-      value(a) { return this.valueOf() === a }
-    }),
-    defineProperty(prototype, 'zero', { value: 0n }),
-    defineProperty(prototype, 'unity', { value: 1n }),
-    defineProperty(prototype, 'neg', {
-      get() { return -this }
-    }),
-    defineProperty(prototype, 'inv', {
-      get() { return this.isZero ? undefined : new Adele(1n, this) }
-    }),
-    defineProperty(prototype, 'unit', {
-      get() { return this < 0 ? -1n : 1n }
-    }),
-    defineProperty(prototype, 'body', {
-      get() { return this < 0 ? this.neg : this.valueOf() }
-    }),
-    defineProperty(prototype, 'factor', {
-      get() {
-        return (
-          !(this % 2n) ? 2n :
-          !(this % 3n) ? 3n :
-          !(this % 5n) ? 5n :
-          ((_, p) => {
-            while (p * p <= _) {
-              if (!(_ % p)) return p // 7
-              p += 4n
-              if (!(_ % p)) return p // 11
-              p += 2n
-              if (!(_ % p)) return p // 13
-              p += 4n
-              if (!(_ % p)) return p // 17
-              p += 2n
-              if (!(_ % p)) return p // 19
-              p += 4n
-              if (!(_ % p)) return p // 23
-              p += 6n
-              if (!(_ % p)) return p // 29
-              p += 2n
-              if (!(_ % p)) return p // 1
-              p += 6n
-            }
-            return _
-          })(this.valueOf(), 7n)
-        )
-      }
-    }),
-    defineProperty(prototype, 'asString', {
-      get() {
-        return (
-          (({ body }) => (
-            (this < 0 ? '−' : '') + (
-              ((_) => (
-                Number.isLittle
-                ? [_[0], '.'].concat(_.slice(1))
-                : _.reverse()
-              ))(
-                [...body.toString(Number.radix)].reverse()
-              )
-            ).join('')
-          ))(this)
-        )
+    Object.defineProperties(prototype, {
+      eql: {
+        value(a) { return this.valueOf() === a }
+      },
+      zero: { value: 0n },
+      unity: { value: 1n },
+      neg: {
+        get() { return -this }
+      },
+      inv: {
+        get() { return this.isZero ? undefined : new Adele(1n, this) }
+      },
+      unit: {
+        get() { return this < 0 ? -1n : 1n }
+      },
+      body: {
+        get() { return this < 0 ? this.neg : this.valueOf() }
+      },
+      factor: {
+        get() {
+          return (
+            !(this % 2n) ? 2n :
+            !(this % 3n) ? 3n :
+            !(this % 5n) ? 5n :
+            ((_, p) => {
+              while (p * p <= _) {
+                if (!(_ % p)) return p // 7
+                p += 4n
+                if (!(_ % p)) return p // 11
+                p += 2n
+                if (!(_ % p)) return p // 13
+                p += 4n
+                if (!(_ % p)) return p // 17
+                p += 2n
+                if (!(_ % p)) return p // 19
+                p += 4n
+                if (!(_ % p)) return p // 23
+                p += 6n
+                if (!(_ % p)) return p // 29
+                p += 2n
+                if (!(_ % p)) return p // 1
+                p += 6n
+              }
+              return _
+            })(this.valueOf(), 7n)
+          )
+        }
+      },
+      asString: {
+        get() {
+          return (
+            (({ body }) => (
+              (this < 0 ? '−' : '') + (
+                ((_) => (
+                  Number.isLittle
+                  ? [_[0], '.'].concat(_.slice(1))
+                  : _.reverse()
+                ))(
+                  [...body.toString(Number.radix)].reverse()
+                )
+              ).join('')
+            ))(this)
+          )
+        }
       }
     })
   ))(BigInt)
