@@ -134,10 +134,12 @@ const [min, max] = entries(vals).reduce(([min, max], [, { ord }]) => [
   ord < min ? ord : min,
   ord > max ? ord : max
 ], [0, 0])
+const topPx = (ord) => round((ord - min + 1) * 100)
+const leftVw = (arg) => ((arg + 0.5) % 1) * 100
 const lineh = (ord, textContent, klass) => (
   ((div) => (
     set(div, 'textContent', textContent),
-    div.setAttribute('style', `top: ${round((ord - min + 1) * 100)}px;`),
+    div.setAttribute('style', `top: ${topPx(ord)}px;`),
     div.setAttribute('class', klass),
     div
   ))(document.createElement('div'))
@@ -145,7 +147,7 @@ const lineh = (ord, textContent, klass) => (
 const linev = (arg, textContent, klass) => (
   ((div) => (
     set(div, 'textContent', textContent),
-    div.setAttribute('style', `left: ${((arg + 0.5) % 1)*100}vw;`),
+    div.setAttribute('style', `left: ${leftVw(arg)}vw;`),
     div.setAttribute('class', klass),
     div
   ))(document.createElement('div'))
@@ -153,7 +155,7 @@ const linev = (arg, textContent, klass) => (
 const label = (textContent, { ord, arg }, klass) => (
   ((div) => (
     set(div, 'textContent', textContent),
-    div.setAttribute('style', `top: ${round((ord - min + 1) * 100)}px; left: ${((arg + 0.5) % 1)*100}vw;`),
+    div.setAttribute('style', `top: ${topPx(ord)}px; left: ${leftVw(arg)}vw;`),
     div.setAttribute('class', 'label'),
     div
   ))(document.createElement('div'))
