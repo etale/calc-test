@@ -36,118 +36,103 @@ div {
 </style>
 <script src="algebraic.js"></script>
 <script>
-const { kg, m, s, C, K, B, e } = Arch.units
-let delta
 const _ = (a, b) => new Arch(a.log, b)
-, tau = _(PI2, 0.25)
-, one = _(1)
-, two = _(2)
-, half = two.inv
-, Ki = _(1024)
-, Mi = Ki.pow(2)
-, Gi = Ki.pow(3)
-, Ti = Ki.pow(4)
-, Pi = Ki.pow(5)
-, Ei = Ki.pow(6)
-, Zi = Ki.pow(7)
-, Yi = Ki.pow(8)
-, KiB = Ki.mul(B)
-, MiB = Mi.mul(B)
-, GiB = Gi.mul(B)
-, TiB = Ti.mul(B)
-, PiB = Pi.mul(B)
-, EiB = Ei.mul(B)
-, ZiB = Zi.mul(B)
-, YiB = Yi.mul(B)
+const {
+  kg, m, s, K, C, B, mol, e, Hz, N, J, W, Pa, A, V, Ω,
+  cd, F, S, Wb, T, H
+} = Arch.units
+const g = _(1e-3).mul(kg)
+const eV = e.mul(V)
+const m3Hz2 = m.pow(3).mul(Hz.pow(2))
+const year = _(60*60*24*365.25).mul(s)
+let delta
 const prefix = {
   '': Arch.unity,
   k: _(1e3), M: _(1e6), G: _(1e9), T: _(1e12),
-//  P: _(1e15), E: _(1e18), Z: _(1e21), Y: _(1e24),
+  P: _(1e15), E: _(1e18), Z: _(1e21), Y: _(1e24),
   m: _(1e-3), μ: _(1e-6), n: _(1e-9), p: _(1e-12),
-//  f: _(1e-15), a: _(1e-18), z: _(1e-21), y: _(1e-24)
+  f: _(1e-15), a: _(1e-18), z: _(1e-21), y: _(1e-24)
+}
+const bprefix = {
+  '': Arch.unity,
+  Ki: _(2**10), Mi: _(2**20), Gi: _(2**30), Ti: _(2**40),
+  Pi: _(2**50), Ei: _(2**60), Zi: _(2**70), Yi: _(2**80)
 }
 const unit = {
-  m, s,
-  g: _(1e-3).mul(kg),
-  Hz: s.inv,
-  N: kg.mul(m).mul(s.pow(-2)),
-  J: kg.mul(m.pow(2)).mul(s.pow(-2)),
-  A: C.mul(s.inv),
-  K, C,
-  W: kg.mul(m.pow(2)).mul(s.pow(-3)),
-  V: kg.mul(m.pow(2)).mul(s.pow(-2)).mul(C.inv),
-  Ω: kg.mul(m.pow(2)).mul(s.pow(-1)).mul(C.pow(-2)),
-  Pa: kg.mul(m.inv).mul(s.pow(-2)),
-//  F: kg.inv.mul(m.pow(-2)).mul(s.pow(2)).mul(C.pow(2)),
-//  S: kg.inv.mul(m.pow(-2)).mul(s.pow(1)).mul(C.pow(2)),
-//  Wb: kg.mul(m.pow(2)).mul(s.pow(-1)).mul(C.inv),
-//  T: kg.mul(s.pow(-1)).mul(C.inv),
-//  H: kg.mul(m.pow(2)).mul(C.pow(-2)),
+  g, eV,
+  m, s, K, C, mol, Hz, N, J, W, Pa, A, V, Ω,
+  cd, F, S, Wb, T, H
 }
-const atm = _(101325).mul(unit.Pa)
-, km = prefix.k.mul(unit.m)
-, min = _(60).mul(unit.s), hour = _(60).mul(min), day = _(24).mul(hour)
-, week = _(7).mul(day), year = _(365.25).mul(day)
-, _0dc = _(273.15).mul(unit.K), _100dc = _(273.15 + 100).mul(unit.K)
-, eV = e.mul(unit.V)
-, me = _(9.10938356e-31).mul(kg)
-, mp = _(1.672621898e-27).mul(kg)
-, vals = Object.keys(unit).reduce(function (prev, u) {
-  return prev.concat(Object.keys(prefix).map(function (p) {
-    return [prefix[p].mul(unit[u]), p + u]
-  }))
-}, []).concat([
-  [eV, 'eV']
-, [prefix.k.mul(eV), 'keV']
-, [prefix.M.mul(eV), 'MeV']
-, [prefix.G.mul(eV), 'GeV']
-, [prefix.T.mul(eV), 'TeV']
-, [atm, 'atm']
-, [min, 'min'], [hour, 'hour'], [day, 'day'], [week, 'week'], [year, 'year']
-, [prefix.k.mul(year), 'Thousand years']
-, [prefix.M.mul(year), 'Million years']
-, [prefix.G.mul(year), 'Billion years']
-, [two.log, 'b' ], [B, 'B' ]
-, [KiB, 'KiB'], [MiB, 'MiB'], [GiB, 'GiB'], [TiB, 'TiB']
-, [PiB, 'PiB'], [EiB, 'EiB'], [ZiB, 'ZiB'], [YiB, 'YiB']
-, [_0dc, '0 °C'], [_100dc, '100 °C']
-, [_(1.65).mul(eV), 'IR'], [_(3.26).mul(eV), 'UV']
-, [e, 'e']
-, [unit.m.mul(unit.Hz), 'm/s']
-, [prefix.k.mul(unit.m).mul(hour.inv), 'km/hour']
-, [_(7.347673e22).mul(kg), 'mass Moon']
-, [_(4*Math.PI * 4.9048695e12).mul(unit.m.pow(3)).mul(unit.s.pow(-2)), 'mass Moon']
-, [_(4*Math.PI * 3.986004418e14).mul(unit.m.pow(3)).mul(unit.s.pow(-2)), 'mass Earth']
-, [_(4*Math.PI * 3.7931187e16).mul(unit.m.pow(3)).mul(unit.s.pow(-2)), 'mass Saturn']
-, [_(4*Math.PI * 1.26686534e17).mul(unit.m.pow(3)).mul(unit.s.pow(-2)), 'mass Jupiter']
-, [_(4*Math.PI * 1.32712442099e20).mul(unit.m.pow(3)).mul(unit.s.pow(-2)), 'mass Sun']
-, [_(3474.3).mul(km), 'radius Moon']
-, [_(6378.137).mul(km), 'radius Earth']
-, [_(695800).mul(km), 'radius Sun' ]
-, [_(384400).mul(km), 'orbit Moon']
-, [_(149597870700).mul(unit.m), 'au']
-, [_(39.445 * 149600000).mul(km), 'orbit Plute']
-, [_(13.799e9).mul(year), 'age Universe']
-, [me, 'mass electron']
-, [mp, 'mass proton']
-, [_(12 * 1.660539040e-27).mul(kg), 'mass C12']
-, [_(4.39).mul(year), 'distance α Centauri']
-, [_(643).mul(year), 'distance Betelgeuse']
-, [_(162.98e3).mul(year), 'distance Large Magellanic']
-, [_(2.54e6).mul(year), 'distance Andromeda']
-, [_(2.3e6).mul(eV), 'mass u']
-, [_(1.275e9).mul(eV), 'mass c']
-, [_(173.07e9).mul(eV), 'mass t']
-, [_(80.4e9).mul(eV), 'mass W']
-, [_(126e9).mul(eV), 'mass Higgs']
-, [_(0.52917721067e-10).mul(unit.m), 'Bohr radius']
-, [_(2.72548).mul(unit.K), 'CMB']
-, [_(6.022140857e23), 'Avogadro constant']
-, [new Arch, '4πG = c = ε₀ = μ₀ = k']
-, [tau, 'h']
-]).sort(function (a, b) {
-  return a[0].ord - b[0].ord
+const vals = {}
+const { keys, assign } = Object
+const { PI } = Math
+keys(prefix).forEach((p) => {
+  keys(unit).forEach((u) => {
+    Reflect.set(vals, p + u, prefix[p].mul(unit[u]))
+  })
 })
+const { km } = vals
+keys(bprefix).forEach((p) => {
+  Reflect.set(vals, p + 'B', bprefix[p].mul(B))
+})
+assign(vals, {
+  atm: _(101325).mul(Pa),
+  min: _(60).mul(s),
+  hour: _(60*60).mul(s),
+  day: _(60*60*24).mul(s),
+  week: _(60*60*24*7).mul(s),
+  year,
+  Thousand_years: _(1e3).mul(year),
+  Million_years: _(1e6).mul(year),
+  Billion_years: _(1e9).mul(year),
+  age_Universe: _(13.799e9).mul(year),
+
+  CMB: _(2.72548).mul(K),
+
+  '0_°C': _(273.15).mul(K),
+  '100_°C': _(273.15 + 100).mul(K),
+  mass_electron: _(9.10938356e-31).mul(kg),
+  mass_proton: _(1.672621898e-27).mul(kg),
+  mass_C12: _(12 * 1.660539040e-27).mul(kg),
+  mass_u: _(2.3e6).mul(eV),
+  mass_c: _(1.275e9).mul(eV),
+  mass_t: _(173.07e9).mul(eV),
+  mass_W: _(80.4e9).mul(eV),
+  mass_Higgs: _(126e9).mul(eV),
+
+  b: _(2 .log), e,
+  IR: _(1.65).mul(eV),
+  UV: _(3.26).mul(eV),
+
+  'm/s': m.mul(Hz),
+  'km/hour': m.mul(Hz).mul(_(1e3/3600)),
+
+  mass_Moon:    _(4*PI*4.9048695e12).mul(m3Hz2),
+  mass_Earth:   _(4*PI*3.986004418e14).mul(m3Hz2),
+  mass_Saturn:  _(4*PI*3.7931187e16).mul(m3Hz2),
+  mass_Jupiter: _(4*PI*1.26686534e17).mul(m3Hz2),
+  mass_Sun:     _(4*PI*1.32712442099e20).mul(m3Hz2),
+  radius_Moon: _(3474.3).mul(km),
+  radius_Earth: _(6378.137).mul(km),
+  radius_Sun: _(695800).mul(km),
+  orbit_Moon: _(384400).mul(km),
+  au: _(149597870700).mul(m),
+  orbit_Plute: _(39.445 * 149600000).mul(km),
+  distance_α_Centauri: _(4.39).mul(year),
+  distance_Betelgeuse: _(643).mul(year),
+  distance_Large_Magellanic: _(162.98e3).mul(year),
+  distance_Andromeda: _(2.54e6).mul(year),
+
+  Bohr_radius: _(0.52917721067e-10).mul(m),
+  Avogadro_constant: _(6.022140857e23),
+  '4πG_=_c_=_ε₀_=_μ₀_=_k': new Arch,
+  h: _(2*PI, 1/2)
+})
+const _vals = keys(vals).map((k) => (
+  [vals[k], k.split('_').join(' ')]
+)).sort((a, b) => (
+  a[0].ord - b[0].ord
+))
 , lineh = function (ord, textContent, klass) {
   var _ = document.createElement('div')
   ord -= delta
@@ -180,20 +165,20 @@ const atm = _(101325).mul(unit.Pa)
 Arch.precision = 6
 onload = function () {
   var append = document.body.appendChild.bind(document.body)
-  delta = vals[0][0].ord - 1
+  delta = _vals[0][0].ord - 1
 
-  var i = Math.floor(vals[0][0].ord)
-  while (i < vals[vals.length - 1][0].ord + 1) {
+  var i = Math.floor(_vals[0][0].ord)
+  while (i < _vals[_vals.length - 1][0].ord + 1) {
     append(lineh(i, i.toString(), 'h'))
     i++
   }
   ;[0, 0.125, 0.25, 0.375, 0.625, 0.75, 0.875].forEach(function (arg) {
     append(linev(arg, '.' + arg.toFixed(3).split('.')[1], 'v'))
   })
-  vals.forEach(function (item) {
+  _vals.forEach(function (item) {
     append(lineh(item[0].ord, '  .' + item[0].ord.toFixed(3).split('.')[1], 'g'))
   })
-  vals.forEach(function (item) {
+  _vals.forEach(function (item) {
     append(label(item[0], item[1]))
   })
 }
