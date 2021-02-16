@@ -36,6 +36,9 @@ div {
 </style>
 <script src="algebraic.js"></script>
 <script>
+const { set } = Reflect
+const { keys, assign, entries } = Object
+const { PI, round, floor, ceil } = Math
 const _ = (a, b) => new Arch(a.log, b)
 const {
   kg, m, s, K, C, B, mol, e, Hz, N, J, W, Pa, A, V, Ω,
@@ -45,13 +48,12 @@ const g = _(1e-3).mul(kg)
 const eV = e.mul(V)
 const m3Hz2 = m.pow(3).mul(Hz.pow(2))
 const year = _(60*60*24*365.25).mul(s)
-let delta
 const prefix = {
   '': Arch.unity,
   k: _(1e3), M: _(1e6), G: _(1e9), T: _(1e12),
-  P: _(1e15), E: _(1e18), Z: _(1e21), Y: _(1e24),
+//  P: _(1e15), E: _(1e18), Z: _(1e21), Y: _(1e24),
   m: _(1e-3), μ: _(1e-6), n: _(1e-9), p: _(1e-12),
-  f: _(1e-15), a: _(1e-18), z: _(1e-21), y: _(1e-24)
+//  f: _(1e-15), a: _(1e-18), z: _(1e-21), y: _(1e-24)
 }
 const bprefix = {
   '': Arch.unity,
@@ -61,22 +63,26 @@ const bprefix = {
 const unit = {
   g, eV,
   m, s, K, C, mol, Hz, N, J, W, Pa, A, V, Ω,
-  cd, F, S, Wb, T, H
+//  cd, F, S, Wb, T, H
 }
 const vals = {}
-const { keys, assign } = Object
-const { PI } = Math
 keys(prefix).forEach((p) => {
   keys(unit).forEach((u) => {
-    Reflect.set(vals, p + u, prefix[p].mul(unit[u]))
+    set(vals, p + u, prefix[p].mul(unit[u]))
   })
 })
-const { km } = vals
 keys(bprefix).forEach((p) => {
-  Reflect.set(vals, p + 'B', bprefix[p].mul(B))
+  set(vals, p + 'B', bprefix[p].mul(B))
 })
+const { km } = vals
 assign(vals, {
+  b: _(2 .log),
+  G: _(1/(4*PI)),
+  'c_=_ε₀_=_μ₀_=_k': Arch.unity,
+  h: _(2*PI, 1/4),
+
   atm: _(101325).mul(Pa),
+
   min: _(60).mul(s),
   hour: _(60*60).mul(s),
   day: _(60*60*24).mul(s),
@@ -85,12 +91,11 @@ assign(vals, {
   Thousand_years: _(1e3).mul(year),
   Million_years: _(1e6).mul(year),
   Billion_years: _(1e9).mul(year),
-  age_Universe: _(13.799e9).mul(year),
 
   CMB: _(2.72548).mul(K),
-
   '0_°C': _(273.15).mul(K),
   '100_°C': _(273.15 + 100).mul(K),
+
   mass_electron: _(9.10938356e-31).mul(kg),
   mass_proton: _(1.672621898e-27).mul(kg),
   mass_C12: _(12 * 1.660539040e-27).mul(kg),
@@ -100,12 +105,14 @@ assign(vals, {
   mass_W: _(80.4e9).mul(eV),
   mass_Higgs: _(126e9).mul(eV),
 
-  b: _(2 .log), e,
+  e,
   IR: _(1.65).mul(eV),
   UV: _(3.26).mul(eV),
 
   'm/s': m.mul(Hz),
   'km/hour': m.mul(Hz).mul(_(1e3/3600)),
+
+  Bohr_radius: _(0.52917721067e-10).mul(m),
 
   mass_Moon:    _(4*PI*4.9048695e12).mul(m3Hz2),
   mass_Earth:   _(4*PI*3.986004418e14).mul(m3Hz2),
@@ -122,66 +129,57 @@ assign(vals, {
   distance_Betelgeuse: _(643).mul(year),
   distance_Large_Magellanic: _(162.98e3).mul(year),
   distance_Andromeda: _(2.54e6).mul(year),
-
-  Bohr_radius: _(0.52917721067e-10).mul(m),
-  Avogadro_constant: _(6.022140857e23),
-  '4πG_=_c_=_ε₀_=_μ₀_=_k': new Arch,
-  h: _(2*PI, 1/2)
+  age_Universe: _(13.799e9).mul(year),
 })
-const _vals = keys(vals).map((k) => (
-  [vals[k], k.split('_').join(' ')]
-)).sort((a, b) => (
-  a[0].ord - b[0].ord
-))
-, lineh = function (ord, textContent, klass) {
-  var _ = document.createElement('div')
-  ord -= delta
-  ord *= 100; ord = Math.round(ord)
-  _.textContent = textContent
-  _.setAttribute('style', 'top: ' + ord.toString() + 'px;')
-  _.setAttribute('class', klass)
-  return _
-}
-, linev = function (arg, textContent, klass) {
-  var _ = document.createElement('div')
-  arg += 0.5; arg %= 1; arg *= 100
-  _.textContent = textContent
-  _.setAttribute('style', 'left: ' + arg.toString() + 'vw;')
-  _.setAttribute('class', klass)
-  return _
-}
-, label = function (z, textContent, klass) {
-  var _ = document.createElement('div')
-    , ord = z.ord, arg = z.arg
-  ord -= delta
-  ord *= 100; ord = Math.round(ord)
-  arg += 0.5; arg %= 1; arg *= 100
-  _.textContent = textContent
-  _.setAttribute('style', 'top: ' + ord.toString() + 'px; left: ' + arg.toString() + 'vw;')
-  _.setAttribute('class', 'label')
-  return _
-}
+const [min, max] = entries(vals).reduce(([min, max], [, { ord }]) => [
+  ord < min ? ord : min,
+  ord > max ? ord : max
+], [0, 0])
+const lineh = (ord, textContent, klass) => (
+  ((div) => (
+    set(div, 'textContent', textContent),
+    div.setAttribute('style', `top: ${round((ord - min + 1) * 100)}px;`),
+    div.setAttribute('class', klass),
+    div
+  ))(document.createElement('div'))
+)
+const linev = (arg, textContent, klass) => (
+  ((div) => (
+    set(div, 'textContent', textContent),
+    div.setAttribute('style', `left: ${((arg + 0.5) % 1)*100}vw;`),
+    div.setAttribute('class', klass),
+    div
+  ))(document.createElement('div'))
+)
+const label = (textContent, { ord, arg }, klass) => (
+  ((div) => (
+    set(div, 'textContent', textContent),
+    div.setAttribute('style', `top: ${round((ord - min + 1) * 100)}px; left: ${((arg + 0.5) % 1)*100}vw;`),
+    div.setAttribute('class', 'label'),
+    div
+  ))(document.createElement('div'))
+)
 
 Arch.precision = 6
-onload = function () {
-  var append = document.body.appendChild.bind(document.body)
-  delta = _vals[0][0].ord - 1
+const divs = []
+;((min, max) => {
+  [...Array(max - min).keys()].map(a => a + min).forEach((ord) => {
+    divs.push(lineh(ord, `${ord}`, 'h'))
+  })
+})(floor(min), ceil(max))
+;[0, 0.125, 0.25, 0.375, 0.625, 0.75, 0.875].forEach((arg) => {
+  divs.push(linev(arg, `.${arg.toFixed(3).split('.')[1]}`, 'v'))
+})
+entries(vals).forEach(([ key, { ord, arg }]) => {
+  divs.push(lineh(ord, `  .${ord.toFixed(3).split('.')[1]}`, 'g'))
+  divs.push(label(key.split('_').join(' '), { ord, arg }))
+})
 
-  var i = Math.floor(_vals[0][0].ord)
-  while (i < _vals[_vals.length - 1][0].ord + 1) {
-    append(lineh(i, i.toString(), 'h'))
-    i++
-  }
-  ;[0, 0.125, 0.25, 0.375, 0.625, 0.75, 0.875].forEach(function (arg) {
-    append(linev(arg, '.' + arg.toFixed(3).split('.')[1], 'v'))
+addEventListener('load', () => {
+  divs.forEach((div) => {
+    document.body.appendChild(div)
   })
-  _vals.forEach(function (item) {
-    append(lineh(item[0].ord, '  .' + item[0].ord.toFixed(3).split('.')[1], 'g'))
-  })
-  _vals.forEach(function (item) {
-    append(label(item[0], item[1]))
-  })
-}
+})
 </script>
 </head>
 <body></body>
