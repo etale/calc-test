@@ -39,26 +39,25 @@ div {
 const { set } = Reflect
 const { keys, assign, entries } = Object
 const { PI, round, floor, ceil } = Math
-const _ = (a, b) => new Arch(a.log, b)
 const {
   kg, m, s, K, C, B, mol, e, Hz, N, J, W, Pa, A, V, Ω,
   cd, F, S, Wb, T, H
 } = Arch.units
-const g = _(1e-3).mul(kg)
+const g = 1e-3.toArch.mul(kg)
 const eV = e.mul(V)
-const m3Hz2 = m.pow(3).mul(Hz.pow(2))
-const year = _(60*60*24*365.25).mul(s)
+const m3s_2 = m.pow(3).mul(s.pow(-2))
+const year = (60*60*24*365.25).toArch.mul(s)
 const prefix = {
   '': Arch.unity,
-  k: _(1e3), M: _(1e6), G: _(1e9), T: _(1e12),
-//  P: _(1e15), E: _(1e18), Z: _(1e21), Y: _(1e24),
-  m: _(1e-3), μ: _(1e-6), n: _(1e-9), p: _(1e-12),
-//  f: _(1e-15), a: _(1e-18), z: _(1e-21), y: _(1e-24)
+  k: 1e3.toArch, M: 1e6.toArch, G: 1e9.toArch, T: 1e12.toArch,
+//  P: 1e15.toArch, E: 1e18.toArch, Z: 1e21.toArch, Y: 1e24.toArch,
+  m: 1e-3.toArch, μ: 1e-6.toArch, n: 1e-9.toArch, p: 1e-12.toArch,
+//  f: 1e-15.toArch, a: 1e-18.toArch, z: 1e-21.toArch, y: 1e-24.toArch,
 }
 const bprefix = {
   '': Arch.unity,
-  Ki: _(2**10), Mi: _(2**20), Gi: _(2**30), Ti: _(2**40),
-  Pi: _(2**50), Ei: _(2**60), Zi: _(2**70), Yi: _(2**80)
+  Ki: (2**10).toArch, Mi: (2**20).toArch, Gi: (2**30).toArch, Ti: (2**40).toArch,
+  Pi: (2**50).toArch, Ei: (2**60).toArch, Zi: (2**70).toArch, Yi: (2**80).toArch
 }
 const unit = {
   g, eV,
@@ -76,60 +75,60 @@ keys(bprefix).forEach((p) => {
 })
 const { km } = vals
 assign(vals, {
-  b: _(2 .log),
-  G: _(1/(4*PI)),
+  b: 2 .log.toArch,
+  G: (1/(4*PI)).toArch,
   'c_=_ε₀_=_μ₀_=_k': Arch.unity,
-  h: _(2*PI, 1/4),
+  h: (-1).toArch.log.conj.mul(2 .toArch),
 
-  atm: _(101325).mul(Pa),
+  atm: (101325).toArch.mul(Pa),
 
-  min: _(60).mul(s),
-  hour: _(60*60).mul(s),
-  day: _(60*60*24).mul(s),
-  week: _(60*60*24*7).mul(s),
+  min: (60).toArch.mul(s),
+  hour: (60*60).toArch.mul(s),
+  day: (60*60*24).toArch.mul(s),
+  week: (60*60*24*7).toArch.mul(s),
   year,
-  Thousand_years: _(1e3).mul(year),
-  Million_years: _(1e6).mul(year),
-  Billion_years: _(1e9).mul(year),
+  Thousand_years: 1e3.toArch.mul(year),
+  Million_years: 1e6.toArch.mul(year),
+  Billion_years: 1e9.toArch.mul(year),
 
-  CMB: _(2.72548).mul(K),
-  '0_°C': _(273.15).mul(K),
-  '100_°C': _(273.15 + 100).mul(K),
+  CMB: 2.72548.toArch.mul(K),
+  '0_°C': 273.15.toArch.mul(K),
+  '100_°C': 373.15.toArch.mul(K),
 
-  mass_electron: _(9.10938356e-31).mul(kg),
-  mass_proton: _(1.672621898e-27).mul(kg),
-  mass_C12: _(12 * 1.660539040e-27).mul(kg),
-  mass_u: _(2.3e6).mul(eV),
-  mass_c: _(1.275e9).mul(eV),
-  mass_t: _(173.07e9).mul(eV),
-  mass_W: _(80.4e9).mul(eV),
-  mass_Higgs: _(126e9).mul(eV),
+  mass_electron: 9.10938356e-31.toArch.mul(kg),
+  mass_proton: 1.672621898e-27.toArch.mul(kg),
+  mass_C12: (12 * 1.660539040e-27).toArch.mul(kg),
+  mass_u: 2.3e6.toArch.mul(eV),
+  mass_c: 1.275e9.toArch.mul(eV),
+  mass_t: 173.07e9.toArch.mul(eV),
+  mass_W: 80.4e9.toArch.mul(eV),
+  mass_Higgs: 126e9.toArch.mul(eV),
 
   e,
-  IR: _(1.65).mul(eV),
-  UV: _(3.26).mul(eV),
+  IR: 1.65.toArch.mul(eV),
+  UV: 3.26.toArch.mul(eV),
 
   'm/s': m.mul(Hz),
-  'km/hour': m.mul(Hz).mul(_(1e3/3600)),
+  'km/hour': m.mul(Hz).mul((1e3/3600).toArch),
 
-  Bohr_radius: _(0.52917721067e-10).mul(m),
+  Bohr_radius: 0.52917721067e-10.toArch.mul(m),
 
-  mass_Moon:    _(4*PI*4.9048695e12).mul(m3Hz2),
-  mass_Earth:   _(4*PI*3.986004418e14).mul(m3Hz2),
-  mass_Saturn:  _(4*PI*3.7931187e16).mul(m3Hz2),
-  mass_Jupiter: _(4*PI*1.26686534e17).mul(m3Hz2),
-  mass_Sun:     _(4*PI*1.32712442099e20).mul(m3Hz2),
-  radius_Moon: _(3474.3).mul(km),
-  radius_Earth: _(6378.137).mul(km),
-  radius_Sun: _(695800).mul(km),
-  orbit_Moon: _(384400).mul(km),
-  au: _(149597870700).mul(m),
-  orbit_Plute: _(39.445 * 149600000).mul(km),
-  distance_α_Centauri: _(4.39).mul(year),
-  distance_Betelgeuse: _(643).mul(year),
-  distance_Large_Magellanic: _(162.98e3).mul(year),
-  distance_Andromeda: _(2.54e6).mul(year),
-  age_Universe: _(13.799e9).mul(year),
+  mass_Moon:    (4*PI*4.9048695e12).toArch.mul(m3s_2),
+  mass_Earth:   (4*PI*3.986004418e14).toArch.mul(m3s_2),
+  mass_Saturn:  (4*PI*3.7931187e16).toArch.mul(m3s_2),
+  mass_Jupiter: (4*PI*1.26686534e17).toArch.mul(m3s_2),
+  mass_Sun:     (4*PI*1.32712442099e20).toArch.mul(m3s_2),
+  radius_Moon: 3474.3.toArch.mul(km),
+  radius_Earth: 6378.137.toArch.mul(km),
+  radius_Sun: 695800 .toArch.mul(km),
+  orbit_Moon: 384400 .toArch.mul(km),
+  au: 149597870700 .toArch.mul(m),
+  orbit_Plute: (39.445 * 149600000).toArch.mul(km),
+  distance_α_Centauri: 4.39.toArch.mul(year),
+  distance_Betelgeuse: 643 .toArch.mul(year),
+  distance_Large_Magellanic: 162.98e3.toArch.mul(year),
+  distance_Andromeda: 2.54e6.toArch.mul(year),
+  age_Universe: 13.799e9.toArch.mul(year),
 })
 const [min, max] = entries(vals).reduce(([min, max], [, { ord }]) => [
   ord < min ? ord : min,
