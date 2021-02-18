@@ -188,6 +188,19 @@ class Algebraic {
           )
         }
       },
+      toArray: {
+        get() {
+          return (
+            (({ floor }) => (
+              floor < 0 ? (
+                floor.neg.toArray.map(a => floor + a)
+              ) : (
+                [...Array(floor).keys()]
+              )
+            ))(this)
+          )
+        }
+      },
       ub2: {
         get() {
           return (
