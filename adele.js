@@ -116,7 +116,7 @@ func['↓'] = function () {
 func['←'] = function () {
   e.value ? reset() : bs()
 }
-func['ˆ'] = function () {
+func['^'] = function () {
   var _
 
   if (e.previousSibling) {
