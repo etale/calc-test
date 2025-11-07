@@ -183,7 +183,7 @@ function mouseWheel(event) {
     return false; 
 }
 
-// 💡 修正済み：タッチ開始時 (モバイル用)
+// 💡 タッチ開始時 (モバイル用)
 function touchStarted() {
     // 1本指タッチの場合のみ処理
     if (touches.length === 1) {
@@ -219,9 +219,6 @@ function touchMoved() {
         // スケールを更新
         scaleFactor *= zoomFactor;
 
-        // スケールに下限を設定
-        scaleFactor = max(scaleFactor, 10);
-
         // 次の移動のために現在のY座標を記録
         lastTouchY = currentTouchY;
 
@@ -238,3 +235,4 @@ function keyPressed() {
         scaleFactor = INITIAL_SCALE_FACTOR;
     }
 }
+
